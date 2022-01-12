@@ -10,16 +10,16 @@ describe('context', () => {
       ref: 'foo',
       repo: 'foo',
       runId: 'foo',
-      serverUrl: 'foo',
       sha: 'foo',
+      workflow: 'foo',
     }), {
       actor: 'foo',
       commitMessage: 'foo',
       ref: 'foo',
       repo: 'foo',
       runId: 'foo',
-      serverUrl: 'foo',
       sha: 'foo',
+      workflow: 'foo',
     })
   })
 })

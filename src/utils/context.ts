@@ -7,8 +7,8 @@ export type Context = {
   ref: string
   repo: string
   runId: string
-  serverUrl: string
   sha: string
+  workflow: string
 }
 
 function evalOrThrows(expression: () => string | undefined, id: string): string {
@@ -28,8 +28,8 @@ export function getContext(values?: Partial<Context>): Context {
   const ref = values?.ref ?? evalOrThrows(() => github.context.ref, 'ref')
   const repo = values?.repo ?? evalOrThrows(() => `${github.context.repo.owner}/${github.context.repo.repo}`, 'repo')
   const runId = values?.runId ?? evalOrThrows(() => isNaN(github.context.runId) ? undefined : github.context.runId.toString(), 'run-id')
-  const serverUrl = values?.serverUrl ?? evalOrThrows(() => github.context.serverUrl, 'server-url')
   const sha = values?.sha ?? evalOrThrows(() => github.context.sha, 'sha')
+  const workflow = values?.workflow ?? evalOrThrows(() => github.context.workflow, 'workflow')
 
   return {
     actor,
@@ -37,7 +37,7 @@ export function getContext(values?: Partial<Context>): Context {
     ref,
     repo,
     runId,
-    serverUrl,
     sha,
+    workflow,
   }
 }

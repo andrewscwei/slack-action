@@ -2,6 +2,15 @@
 
 A GitHub Action for sending build status alerts to a Slack channel.
 
+## Usage
+
+```yml
+uses: andrewscwei/slack-action@v1.0.0
+with:
+  success: ${{ needs.build.result == 'success' }}
+  webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+```
+
 ## Inputs
 
 ### `success-prefix`
@@ -27,6 +36,10 @@ Label of the action button. If provided along with `action-url`, the action butt
 ### `action-url`
 
 Link of the action button. If provided along with `action-label`, the action button will be visible if `success` is `true`.
+
+### `verbose`
+
+Posts a more detailed version of the alert if enabled (defaults to `true`).
 
 ## Outputs
 

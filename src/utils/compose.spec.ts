@@ -1,6 +1,6 @@
 import { assert } from 'chai'
 import { describe, it } from 'mocha'
-import { compose, composeBody, composeButtons, composeStatus } from './compose'
+import { compose, composeActionsBlock, composeBodyBlock, composeStatusBlock } from './compose'
 import { getContext } from './context'
 import { getInputs } from './inputs'
 
@@ -10,8 +10,8 @@ describe('compose', () => {
     ref: 'foo',
     repo: 'foo',
     runId: 'foo',
-    serverUrl: 'foo',
     sha: 'foo',
+    workflow: 'foo',
   })
 
   const mockSuccessInputs = getInputs({
@@ -28,19 +28,19 @@ describe('compose', () => {
     action: { label: 'bar', url: 'baz' },
   })
 
-  it('can compose status', () => {
-    assert.isString(composeStatus(mockContext, mockSuccessInputs))
-    assert.isString(composeStatus(mockContext, mockFailureInputs))
+  it('can compose status block', () => {
+    assert.ok(composeStatusBlock(mockContext, mockSuccessInputs))
+    assert.ok(composeStatusBlock(mockContext, mockFailureInputs))
   })
 
-  it('can compose body', () => {
-    assert.isString(composeBody(mockContext, mockSuccessInputs))
-    assert.isString(composeBody(mockContext, mockFailureInputs))
+  it('can compose body block', () => {
+    assert.ok(composeBodyBlock(mockContext, mockSuccessInputs))
+    assert.ok(composeBodyBlock(mockContext, mockFailureInputs))
   })
 
-  it('can compose buttons', () => {
-    assert(composeButtons(mockContext, mockSuccessInputs).length === 2)
-    assert(composeButtons(mockContext, mockFailureInputs).length === 1)
+  it('can compose actions block', () => {
+    assert(composeActionsBlock(mockContext, mockSuccessInputs).elements.length === 2)
+    assert(composeActionsBlock(mockContext, mockFailureInputs).elements.length === 1)
   })
 
   it('can compose full message', () => {

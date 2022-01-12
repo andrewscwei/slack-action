@@ -19,6 +19,9 @@ inputs:
   action-url:
     description: Link of the action button. If provided along with `action-label`, the action button will be visible if `success` is `true`.
     required: false
+  verbose:
+    description: Posts a more detailed version of the alert if enabled (defaults to `true`).
+    required: false
 outputs:
   response:
     description: The data of the Slack API request.

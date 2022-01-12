@@ -41,17 +41,20 @@ describe('inputs', () => {
       prefixes: { success: '😎', failure: '😱' },
       webhookUrl: 'foo',
       isSuccess: false,
+      isVerbose: true,
     })
 
     assert.deepEqual(getInputs({
       prefixes: { success: 'bar', failure: 'baz' },
       isSuccess: true,
+      isVerbose: false,
       webhookUrl: 'foo',
       action: { label: 'bar', url: 'baz' },
     }), {
       prefixes: { success: 'bar', failure: 'baz' },
       webhookUrl: 'foo',
       isSuccess: true,
+      isVerbose: false,
       action: { label: 'bar', url: 'baz' },
     })
   })
