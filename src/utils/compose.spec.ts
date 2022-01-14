@@ -1,6 +1,6 @@
 import { assert } from 'chai'
 import { describe, it } from 'mocha'
-import { compose, composeActionsBlock, composeBodyBlock, composeStatusBlock } from './compose'
+import { compose, composeActionsBlock, composeBodyAttachment, composeBodyBlock } from './compose'
 import { getContext } from './context'
 import { getInputs } from './inputs'
 
@@ -28,14 +28,14 @@ describe('compose', () => {
     action: { label: 'bar', url: 'baz' },
   })
 
-  it('can compose status block', () => {
-    assert.ok(composeStatusBlock(mockContext, mockSuccessInputs))
-    assert.ok(composeStatusBlock(mockContext, mockFailureInputs))
-  })
-
   it('can compose body block', () => {
     assert.ok(composeBodyBlock(mockContext, mockSuccessInputs))
     assert.ok(composeBodyBlock(mockContext, mockFailureInputs))
+  })
+
+  it('can compose body attachment', () => {
+    assert.ok(composeBodyAttachment(mockContext, mockSuccessInputs))
+    assert.ok(composeBodyAttachment(mockContext, mockFailureInputs))
   })
 
   it('can compose actions block', () => {

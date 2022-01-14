@@ -24,7 +24,7 @@ function evalOrThrows(expression: () => string | undefined, id: string): string 
 
 export function getContext(values?: Partial<Context>): Context {
   const actor = values?.actor ?? evalOrThrows(() => github.context.actor, 'actor')
-  const commitMessage = values?.commitMessage ?? _.get(github.context.payload, 'commits[0].message', '<no commit message>')
+  const commitMessage = values?.commitMessage ?? _.get(github.context.payload, 'head_commit.message', '<no commit message>')
   const ref = values?.ref ?? evalOrThrows(() => github.context.ref, 'ref')
   const repo = values?.repo ?? evalOrThrows(() => `${github.context.repo.owner}/${github.context.repo.repo}`, 'repo')
   const runId = values?.runId ?? evalOrThrows(() => isNaN(github.context.runId) ? undefined : github.context.runId.toString(), 'run-id')

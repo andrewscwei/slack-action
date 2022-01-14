@@ -38,7 +38,7 @@ describe('inputs', () => {
     assert.deepEqual(getInputs({
       webhookUrl: 'foo',
     }), {
-      prefixes: { success: '😎', failure: '😱' },
+      prefixes: { success: '🤖', failure: '😱' },
       webhookUrl: 'foo',
       isSuccess: false,
       isVerbose: true,

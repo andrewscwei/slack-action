@@ -38,7 +38,7 @@ export function getBooleanInput(id: string, defaultValue?: boolean): boolean {
 }
 
 export function getInputs(values?: Partial<Inputs>): Inputs {
-  const successPrefix = values?.prefixes?.success ?? getStringInput('success-prefix', '😎')
+  const successPrefix = values?.prefixes?.success ?? getStringInput('success-prefix', '🤖')
   const failurePrefix = values?.prefixes?.failure ?? getStringInput('failure-prefix', '😱')
   const webhookUrl = values?.webhookUrl ?? getStringInput('webhook-url')
   const isSuccess = values?.isSuccess ?? getBooleanInput('success', false)
