@@ -42,7 +42,7 @@ export function getInputs(values?: Partial<Inputs>): Inputs {
   const failurePrefix = values?.prefixes?.failure ?? getStringInput('failure-prefix', '😱')
   const webhookUrl = values?.webhookUrl ?? getStringInput('webhook-url')
   const isSuccess = values?.isSuccess ?? getBooleanInput('success', false)
-  const isVerbose = values?.isVerbose ?? getBooleanInput('success', true)
+  const isVerbose = values?.isVerbose ?? getBooleanInput('verbose', true)
   const actionLabel = values?.action?.label ?? getStringInput('action-label', '')
   const actionUrl = values?.action?.url ?? getStringInput('action-url', '')
   const hasAction = actionLabel !== '' && actionUrl !== ''
