@@ -51,4 +51,4 @@ fi
 git tag ${VERSION}
 git push --tags
 
-echo "Successfully publish release for ${VERSION}"
+echo "Successfully published release for ${VERSION}"
