@@ -19,10 +19,10 @@ async function main() {
   })
     .then(res => {
       switch (res.status) {
-      case 200:
-        return res.data
-      default:
-        throw new Error(res.data)
+        case 200:
+          return res.data
+        default:
+          throw new Error(res.data)
       }
     })
 }

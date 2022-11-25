@@ -18,6 +18,7 @@ export type Inputs = {
 export function getStringInput(id: string, defaultValue?: string): string {
   try {
     const input = core.getInput(id, { required: true, trimWhitespace: true })
+
     return input
   }
   catch (err) {
@@ -29,6 +30,7 @@ export function getStringInput(id: string, defaultValue?: string): string {
 export function getBooleanInput(id: string, defaultValue?: boolean): boolean {
   try {
     const input = core.getBooleanInput(id, { required: true })
+
     return input
   }
   catch (err) {

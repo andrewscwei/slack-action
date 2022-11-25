@@ -15,6 +15,7 @@ function evalOrThrows(expression: () => string | undefined, id: string): string 
   try {
     const value = expression()
     if (value === undefined) throw Error(`Expression with ID <${id}> evaluated to undefined value`)
+
     return value
   }
   catch (err) {
