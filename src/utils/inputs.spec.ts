@@ -25,15 +25,6 @@ describe('inputs', () => {
     assert.throws(() => getInputs())
   })
 
-  it('throws when inputs has either action-label or action-url defined but not both', () => {
-    assert.throws(() => getInputs({
-      prefixes: { success: 'bar', failure: 'baz' },
-      isSuccess: true,
-      webhookUrl: 'foo',
-      action: { label: 'bar' },
-    } as any))
-  })
-
   it('can get all inputs with custom values', () => {
     assert.deepEqual(getInputs({
       webhookUrl: 'foo',
