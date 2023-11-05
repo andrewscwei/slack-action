@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import axios from 'axios'
+import { sendMessage } from './core/sendMessage'
 import { compose } from './utils/compose'
 import { getContext } from './utils/context'
 import { getInputs } from './utils/inputs'
@@ -12,19 +12,9 @@ async function main() {
   core.info('Sending message via Slack API:')
   core.info(JSON.stringify(message, undefined, 2))
 
-  return axios.post(inputs.webhookUrl, message, {
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-    },
+  return sendMessage(message, {
+    webhookUrl: inputs.webhookUrl,
   })
-    .then(res => {
-      switch (res.status) {
-        case 200:
-          return res.data
-        default:
-          throw new Error(res.data)
-      }
-    })
 }
 
 main()
