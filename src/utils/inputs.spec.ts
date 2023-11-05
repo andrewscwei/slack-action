@@ -29,22 +29,24 @@ describe('inputs', () => {
     assert.deepEqual(getInputs({
       webhookUrl: 'foo',
     }), {
-      prefixes: { success: '🤖', failure: '😱' },
+      prefixes: { success: '🤖', failure: '😱', cancelled: '🫥' },
       webhookUrl: 'foo',
       isSuccess: false,
+      isCancelled: false,
       isVerbose: true,
     })
 
     assert.deepEqual(getInputs({
-      prefixes: { success: 'bar', failure: 'baz' },
+      prefixes: { success: 'bar', failure: 'baz', cancelled: 'qux' },
       isSuccess: true,
       isVerbose: false,
       webhookUrl: 'foo',
       action: { label: 'bar', url: 'baz' },
     }), {
-      prefixes: { success: 'bar', failure: 'baz' },
+      prefixes: { success: 'bar', failure: 'baz', cancelled: 'qux' },
       webhookUrl: 'foo',
       isSuccess: true,
+      isCancelled: false,
       isVerbose: false,
       action: { label: 'bar', url: 'baz' },
     })

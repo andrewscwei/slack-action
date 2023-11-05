@@ -7,6 +7,9 @@ inputs:
   failure-prefix:
     description: The prefix to use in a failure alert, defaults to 😱.
     required: false
+  cancelled-prefix:
+    description: The prefix to use in a cancelled alert, defaults to 🫥.
+    required: false
   webhook-url:
     description: The incoming webhook URL.
     required: true

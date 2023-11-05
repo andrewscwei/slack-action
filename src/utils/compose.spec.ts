@@ -15,14 +15,14 @@ describe('compose', () => {
   })
 
   const mockSuccessInputs = getInputs({
-    prefixes: { success: 'bar', failure: 'baz' },
+    prefixes: { success: 'bar', failure: 'baz', cancelled: 'qux' },
     isSuccess: true,
     webhookUrl: 'foo',
     action: { label: 'bar', url: 'baz' },
   })
 
   const mockFailureInputs = getInputs({
-    prefixes: { success: 'bar', failure: 'baz' },
+    prefixes: { success: 'bar', failure: 'baz', cancelled: 'qux' },
     isSuccess: false,
     webhookUrl: 'foo',
     action: { label: 'bar', url: 'baz' },

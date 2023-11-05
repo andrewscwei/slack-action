@@ -20,7 +20,10 @@ export function composeNotificationText(context: Context, inputs: Inputs) {
 export function composeStatusText(context: Context, inputs: Inputs) {
   let statusStr = ''
 
-  if (inputs.isSuccess) {
+  if (inputs.isCancelled) {
+    statusStr += `${prefix(inputs.prefixes.cancelled)}*BUILD CANCELLED*`
+  }
+  else if (inputs.isSuccess) {
     statusStr += `${prefix(inputs.prefixes.success)}*BUILD PASSED*`
   }
   else {

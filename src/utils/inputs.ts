@@ -1,12 +1,15 @@
 import * as core from '@actions/core'
+import assert from 'assert'
 
 export type Inputs = {
   prefixes: {
     success: string
     failure: string
+    cancelled: string
   }
   webhookUrl: string
   isSuccess: boolean
+  isCancelled: boolean
   isVerbose: boolean
   action?: {
     label: string
@@ -38,23 +41,30 @@ export function getBooleanInput(id: string, defaultValue?: boolean): boolean {
   }
 }
 
-export function getInputs(values?: Partial<Inputs>): Inputs {
-  const successPrefix = values?.prefixes?.success ?? getStringInput('success-prefix', '🤖')
-  const failurePrefix = values?.prefixes?.failure ?? getStringInput('failure-prefix', '😱')
-  const webhookUrl = values?.webhookUrl ?? getStringInput('webhook-url')
-  const isSuccess = values?.isSuccess ?? getBooleanInput('success', false)
-  const isVerbose = values?.isVerbose ?? getBooleanInput('verbose', true)
-  const actionLabel = values?.action?.label ?? getStringInput('action-label', '')
-  const actionUrl = values?.action?.url ?? getStringInput('action-url', '')
+export function getInputs(mock?: Partial<Inputs>): Inputs {
+  const successPrefix = mock?.prefixes?.success ?? getStringInput('success-prefix', '🤖')
+  const failurePrefix = mock?.prefixes?.failure ?? getStringInput('failure-prefix', '😱')
+  const cancelledPrefix = mock?.prefixes?.cancelled ?? getStringInput('cancelled-prefix', '🫥')
+  const webhookUrl = mock?.webhookUrl ?? getStringInput('webhook-url')
+  const isSuccess = mock?.isSuccess ?? getBooleanInput('success', false)
+  const isCancelled = mock?.isCancelled ?? getBooleanInput('cancelled', false)
+  const isVerbose = mock?.isVerbose ?? getBooleanInput('verbose', true)
+  const actionLabel = mock?.action?.label ?? getStringInput('action-label', '')
+  const actionUrl = mock?.action?.url ?? getStringInput('action-url', '')
   const hasAction = actionLabel !== '' && actionUrl !== ''
+  const hasNoAction = !isSuccess || actionLabel === '' && actionUrl === ''
+
+  assert(hasAction || hasNoAction, Error('Both <action-label> and <action-url> inputs must be provided'))
 
   return {
     prefixes: {
       success: successPrefix,
       failure: failurePrefix,
+      cancelled: cancelledPrefix,
     },
     webhookUrl,
     isSuccess,
+    isCancelled,
     isVerbose,
     ...hasAction ? {
       action: {
