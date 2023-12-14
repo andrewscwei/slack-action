@@ -29,6 +29,10 @@ The prefix to use in a failure alert, defaults to 😱.
 
 **Required**: Specifies whether this is a success or failure alert.
 
+### `cancelled`
+
+Specifies whether this is a cancelled alert.
+
 ### `action-label`
 
 Label of the action button. If provided along with `action-url`, the action button will be visible if `success` is `true`.

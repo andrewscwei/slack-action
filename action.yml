@@ -16,6 +16,9 @@ inputs:
   success:
     description: Specifies whether this is a success or failure alert.
     required: true
+  cancelled:
+    description: Specifies whether this is a cancelled alert.
+    required: false
   action-label:
     description: Label of the action button. If provided along with `action-url`, the action button will be visible if `success` is `true`.
     required: false
