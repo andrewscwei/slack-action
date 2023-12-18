@@ -9,7 +9,10 @@ function prefix(value?: string) {
 }
 
 export function composeNotificationText(context: Context, inputs: Inputs) {
-  if (inputs.isSuccess) {
+  if (inputs.isCancelled) {
+    return `${prefix(inputs.prefixes.cancelled)}BUILD CANCELLED in ${context.repo}`
+  }
+  else if (inputs.isSuccess) {
     return `${prefix(inputs.prefixes.success)}BUILD PASSED in ${context.repo}`
   }
   else {
@@ -115,7 +118,10 @@ export function composeActionsBlock(context: Context, inputs: Inputs) {
 export function composeBodyAttachment(context: Context, inputs: Inputs) {
   let titleStr = ''
 
-  if (inputs.isSuccess) {
+  if (inputs.isCancelled) {
+    titleStr += `${prefix(inputs.prefixes.cancelled)}*BUILD CANCELLED*`
+  }
+  else if (inputs.isSuccess) {
     titleStr += `${prefix(inputs.prefixes.success)}*BUILD PASSED*`
   }
   else {
