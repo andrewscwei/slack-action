@@ -5,7 +5,7 @@ A GitHub Action for sending build status alerts to a Slack channel.
 ## Usage
 
 ```yml
-uses: andrewscwei/slack-action@v1.0.0
+uses: andrewscwei/slack-action@v1
 with:
   success: ${{ needs.build.result == 'success' }}
   cancelled: ${{ needs.build.result == 'cancelled' }}
