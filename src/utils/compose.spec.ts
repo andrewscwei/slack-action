@@ -1,8 +1,8 @@
 import { assert } from 'chai'
 import { describe, it } from 'mocha'
-import { compose, composeActionsBlock, composeBodyAttachment, composeBodyBlock } from './compose'
-import { getContext } from './context'
-import { getInputs } from './inputs'
+import { compose, composeActionsBlock, composeBodyAttachment, composeBodyBlock } from './compose.js'
+import { getContext } from './context.js'
+import { getInputs } from './inputs.js'
 
 describe('compose', () => {
   const mockContext = getContext({

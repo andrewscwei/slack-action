@@ -1,8 +1,8 @@
 import * as core from '@actions/core'
-import { sendMessage } from './core/sendMessage'
-import { compose } from './utils/compose'
-import { getContext } from './utils/context'
-import { getInputs } from './utils/inputs'
+import { sendMessage } from './core/sendMessage.js'
+import { compose } from './utils/compose.js'
+import { getContext } from './utils/context.js'
+import { getInputs } from './utils/inputs.js'
 
 async function main() {
   const context = getContext()

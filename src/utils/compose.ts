@@ -1,12 +1,5 @@
-import _ from 'lodash'
-import { Context } from './context'
-import { Inputs } from './inputs'
-
-function prefix(value?: string) {
-  if (_.isEmpty(value)) return ''
-
-  return `${value} `
-}
+import { Context } from './context.js'
+import { Inputs } from './inputs.js'
 
 export function composeNotificationText(context: Context, inputs: Inputs) {
   if (inputs.isCancelled) {
@@ -174,4 +167,10 @@ export function compose(context: Context, inputs: Inputs) {
       ],
     }
   }
+}
+
+function prefix(value?: string) {
+  if (value === undefined || value === null || value === '') return ''
+
+  return `${value} `
 }

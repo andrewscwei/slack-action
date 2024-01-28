@@ -1,15 +1,11 @@
-name: CD
+name: CI
 on:
   push:
-    tags: ["v*"]
-  release:
-    types: [published]
-concurrency:
-  group: deploy
-  cancel-in-progress: true
+    branches: ["**"]
+    tags-ignore: ["v*"]
 jobs:
-  release:
-    name: Release
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,19 +31,15 @@ jobs:
         run: npm run test:unit
       - name: Build
         run: npm run build
-      - name: Create release
-        run: .github/workflows/create_release.sh
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   notify:
     name: Notify
-    needs: [release]
+    needs: [build]
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
       - uses: andrewscwei/telegram-action@v1
         with:
-          success: ${{ needs.release.result == 'success' }}
-          cancelled: ${{ needs.release.result == 'cancelled' }}
+          success: ${{ needs.build.result == 'success' }}
+          cancelled: ${{ needs.build.result == 'cancelled' }}
           bot-token: ${{ secrets.TELEGRAM_DEVOPS_BOT_TOKEN }}
           chat-id: ${{ secrets.TELEGRAM_DEVOPS_CHAT_ID }}

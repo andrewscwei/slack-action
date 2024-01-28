@@ -1,6 +1,6 @@
 import { assert } from 'chai'
 import { describe, it } from 'mocha'
-import { getBooleanInput, getInputs, getStringInput } from './inputs'
+import { getBooleanInput, getInputs, getStringInput } from './inputs.js'
 
 describe('inputs', () => {
   it('throws when getting nonexistent string inputs without default value', () => {

@@ -1,6 +1,6 @@
 import { assert } from 'chai'
 import { describe, it } from 'mocha'
-import { getContext } from './context'
+import { getContext } from './context.js'
 
 describe('context', () => {
   it('can get context with custom values', () => {

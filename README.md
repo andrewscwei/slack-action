@@ -8,6 +8,7 @@ A GitHub Action for sending build status alerts to a Slack channel.
 uses: andrewscwei/slack-action@v1.0.0
 with:
   success: ${{ needs.build.result == 'success' }}
+  cancelled: ${{ needs.build.result == 'cancelled' }}
   webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
 ```
 
