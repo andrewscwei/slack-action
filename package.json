@@ -1,6 +1,6 @@
 {
   "name": "slack-action",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A GitHub Action for sending build status alerts to a Slack channel",
   "private": true,
   "type": "module",
@@ -9,6 +9,7 @@
     "prebuild": "npm run lint && npm run clean",
     "build": "tsc",
     "build:test": "npm run build -- --project tsconfig.test.json",
+    "test": "npm run test:unit",
     "test:unit": "mocha -r dotenv/config --config=./.mocharc \"src/\"",
     "lint": "eslint --ext .ts src",
     "lint:fix": "npm run lint -- --fix"
@@ -22,12 +23,12 @@
   "devDependencies": {
     "@types/chai": "^4.3.11",
     "@types/mocha": "^10.0.6",
-    "@typescript-eslint/eslint-plugin": "^6.19.1",
-    "@typescript-eslint/parser": "^6.19.1",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "chai": "^5.0.3",
     "dotenv": "^16.4.1",
     "eslint": "^8.56.0",
-    "mocha": "^10.2.0",
+    "mocha": "^10.3.0",
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"

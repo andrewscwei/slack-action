@@ -32,5 +32,5 @@ outputs:
   response:
     description: The data of the Slack API request.
 runs:
-  using: node16
+  using: node20
   main: dist/index.js
