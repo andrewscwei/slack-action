@@ -6,8 +6,8 @@
 DIST_DIR=dist
 ORIGIN_URL="https://${GITHUB_ACTOR}:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 VERSION=v$(grep '"version"' package.json | cut -d '"' -f 4 | head -n 1)
-MAJOR_VERSION="$(cut -d '.' -f 1 <<< "$VERSION")"
-RELEASE_BRANCH="$MAJOR_VERSION"
+MAJOR_VERSION="$(cut -d '.' -f 1 <<< "${VERSION}")"
+RELEASE_BRANCH="${MAJOR_VERSION}"
 
 if [ "$VERSION" != "$GITHUB_REF_NAME" ]; then
   echo "Failed to create release for ${VERSION}, version mismatch between pushed tag and package.json"
@@ -46,8 +46,5 @@ git commit --allow-empty -m "${COMMIT_MESSAGE}"
 git push -f --set-upstream ${ORIGIN_URL} ${RELEASE_BRANCH}
 
 gh release create ${VERSION} --generate-notes
-
-git tag -fa ${MAJOR_VERSION} -m "Map ${MAJOR_VERSION} to ${VERSION}"
-git push origin ${MAJOR_VERSION} --force
 
 echo "Successfully created release for ${VERSION}"
