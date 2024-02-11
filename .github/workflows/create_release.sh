@@ -5,8 +5,9 @@
 
 DIST_DIR=dist
 ORIGIN_URL="https://${GITHUB_ACTOR}:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-RELEASE_BRANCH="release"
 VERSION=v$(grep '"version"' package.json | cut -d '"' -f 4 | head -n 1)
+MAJOR_VERSION="$(cut -d '.' -f 1 <<< "$VERSION")"
+RELEASE_BRANCH="$MAJOR_VERSION"
 
 if [ "$VERSION" != "$GITHUB_REF_NAME" ]; then
   echo "Failed to create release for ${VERSION}, version mismatch between pushed tag and package.json"
@@ -36,7 +37,6 @@ find . -maxdepth 1 \
   -exec rm -rf {} \;
 
 # Push to release branch
-MAJOR_VERSION="$(cut -d '.' -f 1 <<< "$VERSION")"
 COMMIT_MESSAGE="$(git log -1 --pretty=%B)"
 
 git config user.name "${GITHUB_ACTOR}"
