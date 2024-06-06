@@ -10,13 +10,15 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "inlineSources": false,
-    "lib": ["ESNext"],
-    "module": "esnext",
-    "moduleResolution": "node",
+    "lib": [
+      "ESNext"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "noImplicitAny": true,
     "outDir": "dist",
     "pretty": true,
-    "removeComments": false,
+    "removeComments": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": false,
@@ -24,13 +26,11 @@
     "strictNullChecks": true,
     "target": "ESNext"
   },
+  "exclude": [
+    "node_modules",
+    "build"
+  ],
   "include": [
     "src/**/*.ts"
-  ],
-  "exclude": [
-    "**/*.spec.ts",
-    "node_modules",
-    "build",
-    "tests"
   ]
 }

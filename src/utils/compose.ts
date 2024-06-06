@@ -1,5 +1,5 @@
-import { Context } from './context.js'
-import { Inputs } from './inputs.js'
+import { type Context } from './context.js'
+import { type Inputs } from './inputs.js'
 
 export function composeNotificationText(context: Context, inputs: Inputs) {
   if (inputs.isCancelled) {
@@ -44,16 +44,16 @@ export function composeActorBlock(context: Context, inputs: Inputs) {
   const actorLink = `<https://github.com/${context.actor}|${context.actor}>`
 
   return {
-    'type': 'context',
-    'elements': [
+    type: 'context',
+    elements: [
       {
-        'type': 'image',
-        'image_url': actorImage,
-        'alt_text': context.actor,
+        type: 'image',
+        image_url: actorImage,
+        alt_text: context.actor,
       },
       {
-        'type': 'mrkdwn',
-        'text': actorLink,
+        type: 'mrkdwn',
+        text: actorLink,
       },
     ],
   }
@@ -65,10 +65,10 @@ export function composeBodyBlock(context: Context, inputs: Inputs) {
   const commitStr = `\`<${repoUrl}/commit/${context.sha}|${context.sha.substring(0, 7)}>\``
 
   return {
-    'type': 'section',
-    'text': {
-      'type': 'mrkdwn',
-      'text': `${composeStatusText(context, inputs)}\n- ${context.commitMessage} (${commitStr} by ${actorLink})`,
+    type: 'section',
+    text: {
+      type: 'mrkdwn',
+      text: `${composeStatusText(context, inputs)}\n- ${context.commitMessage} (${commitStr} by ${actorLink})`,
     },
   }
 }
@@ -79,32 +79,32 @@ export function composeActionsBlock(context: Context, inputs: Inputs) {
   const buttons = []
 
   buttons.push({
-    'type': 'button',
-    'text': {
-      'type': 'plain_text',
-      'text': 'View job',
-      'emoji': true,
+    type: 'button',
+    text: {
+      type: 'plain_text',
+      text: 'View job',
+      emoji: true,
     },
-    'url': jobUrl,
+    url: jobUrl,
     ...inputs.isSuccess ? {} : { style: 'danger' },
   })
 
   if (inputs.isSuccess && inputs.action) {
     buttons.push({
-      'type': 'button',
-      'text': {
-        'type': 'plain_text',
-        'text': inputs.action.label,
-        'emoji': true,
+      type: 'button',
+      text: {
+        type: 'plain_text',
+        text: inputs.action.label,
+        emoji: true,
       },
-      'style': 'primary',
-      'url': inputs.action.url,
+      style: 'primary',
+      url: inputs.action.url,
     })
   }
 
   return {
-    'type': 'actions',
-    'elements': buttons,
+    type: 'actions',
+    elements: buttons,
   }
 }
 
@@ -135,17 +135,17 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
   titleStr += ` in ${repoStr} \`${refStr}\``
 
   return {
-    'color': inputs.isSuccess ? '#2eb67d' : '#e01e5a',
-    'fallback': composeNotificationText(context, inputs),
-    'footer_icon': actorImage,
-    'footer': `${actorLink} using workflow ${workflowStr}`,
-    'mrkdwn_in': ['text', 'footer'],
-    'text': `${titleStr}\n${shaStr} ${context.commitMessage}`,
-    'actions': composeActionsBlock(context, inputs).elements.map(action => ({
-      'type': 'button',
-      'text': action.text.text,
-      'style': action.style,
-      'url': action.url,
+    color: inputs.isSuccess ? '#2eb67d' : '#e01e5a',
+    fallback: composeNotificationText(context, inputs),
+    footer_icon: actorImage,
+    footer: `${actorLink} using workflow ${workflowStr}`,
+    mrkdwn_in: ['text', 'footer'],
+    text: `${titleStr}\n${shaStr} ${context.commitMessage}`,
+    actions: composeActionsBlock(context, inputs).elements.map(action => ({
+      type: 'button',
+      text: action.text.text,
+      style: action.style,
+      url: action.url,
     })),
   }
 }
@@ -153,15 +153,15 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
 export function compose(context: Context, inputs: Inputs) {
   if (inputs.isVerbose) {
     return {
-      'attachments': [
+      attachments: [
         composeBodyAttachment(context, inputs),
       ],
     }
   }
   else {
     return {
-      'text': composeNotificationText(context, inputs),
-      'blocks': [
+      text: composeNotificationText(context, inputs),
+      blocks: [
         composeBodyBlock(context, inputs),
         composeActionsBlock(context, inputs),
       ],
