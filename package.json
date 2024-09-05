@@ -9,10 +9,10 @@
     "prebuild": "npm run lint && npm run clean",
     "build": "tsc",
     "build:test": "npm run build -- --project tsconfig.test.json",
-    "test": "npm run test:unit",
-    "test:unit": "mocha -r dotenv/config --config=./.mocharc \"src/\"",
+    "test": "npm run unit",
+    "unit": "mocha -r dotenv/config --config=./.mocharc \"src/\"",
     "lint": "eslint",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "eslint --fix"
   },
   "repository": {
     "type": "git",
@@ -21,21 +21,22 @@
   "author": "Andrew Wei <andrewscwei@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@eslint/js": "^9.4.0",
+    "@eslint/js": "^9.9.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@stylistic/eslint-plugin": "^2.1.0",
-    "@types/chai": "^4.3.16",
-    "@types/mocha": "^10.0.6",
+    "@stylistic/eslint-plugin": "^2.7.2",
+    "@types/chai": "^4.3.19",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^22.5.4",
     "chai": "^5.1.1",
     "dotenv": "^16.4.5",
-    "eslint": "^9.4.0",
-    "mocha": "^10.4.0",
-    "rimraf": "^5.0.7",
-    "semantic-release": "^24.0.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.5",
-    "typescript-eslint": "^8.0.0-alpha.10"
+    "eslint": "^9.9.1",
+    "mocha": "^10.7.3",
+    "rimraf": "^6.0.1",
+    "semantic-release": "^24.1.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.4.0"
   },
   "dependencies": {
     "@actions/core": "^1.10.1",
