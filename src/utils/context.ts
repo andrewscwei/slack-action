@@ -6,7 +6,7 @@ export type Context = {
   ref: string
   repo: string
   runId: string
-  sha: string
+  sha?: string
   workflow: string
 }
 
@@ -16,7 +16,7 @@ export function getContext(values?: Partial<Context>): Context {
   const ref = values?.ref ?? evalOrThrows(() => github.context.ref, 'ref')
   const repo = values?.repo ?? evalOrThrows(() => `${github.context.repo.owner}/${github.context.repo.repo}`, 'repo')
   const runId = values?.runId ?? evalOrThrows(() => isNaN(github.context.runId) ? undefined : github.context.runId.toString(), 'run-id')
-  const sha = values?.sha ?? evalOrThrows(() => github.context.sha, 'sha')
+  const sha = values?.sha ?? getSHA()
   const workflow = values?.workflow ?? evalOrThrows(() => github.context.workflow, 'workflow')
 
   return {
@@ -30,10 +30,19 @@ export function getContext(values?: Partial<Context>): Context {
   }
 }
 
+function getSHA(): string | undefined {
+  switch (github.context.eventName) {
+    case 'pull_request':
+      return github.context.payload['pull_request']?.['head']?.['sha']
+    default:
+      return github.context.sha
+  }
+}
+
 function getCommitMessage(): string | undefined {
   switch (github.context.eventName) {
     case 'pull_request':
-      return github.context.payload['pull_request']?.['head']?.['commit']?.['message']
+      return github.context.payload['pull_request']?.title
     default:
       return github.context.payload['head_commit']?.['message']
   }

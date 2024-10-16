@@ -26,15 +26,24 @@ export function composeStatusText(context: Context, inputs: Inputs) {
     statusStr += `${prefix(inputs.prefixes.failure)}*BUILD FAILED*`
   }
 
-  const matches = `${context.ref}`.match(/^refs\/[^/]+\/(.*)$/)
-  const refName = matches?.[1] ?? context.ref
+  if (context.ref.startsWith('refs/pull/')) {
+    const matches = `${context.ref}`.match(/^refs\/pull\/([^/]+)\/.*$/)
+    const prNumber = matches?.[1] ?? context.ref
+    const repoUrl = `https://github.com/${context.repo}`
+    const repoStr = `<${repoUrl}|${context.repo}>`
+    const refStr = `<${repoUrl}/pull/${prNumber}|pr-${prNumber}>`
 
-  const repoUrl = `https://github.com/${context.repo}`
+    statusStr += ` in ${repoStr} \`${refStr}\``
+  }
+  else {
+    const matches = `${context.ref}`.match(/^refs\/[^/]+\/(.*)$/)
+    const refName = matches?.[1] ?? context.ref
+    const repoUrl = `https://github.com/${context.repo}`
+    const repoStr = `<${repoUrl}|${context.repo}>`
+    const refStr = `<${repoUrl}/tree/${refName}|${refName}>`
 
-  const repoStr = `<${repoUrl}|${context.repo}>`
-  const refStr = `<${repoUrl}/tree/${refName}|${refName}>`
-
-  statusStr += ` in ${repoStr} \`${refStr}\``
+    statusStr += ` in ${repoStr} \`${refStr}\``
+  }
 
   return statusStr
 }
@@ -62,13 +71,13 @@ export function composeActorBlock(context: Context, inputs: Inputs) {
 export function composeBodyBlock(context: Context, inputs: Inputs) {
   const repoUrl = `https://github.com/${context.repo}`
   const actorLink = `<https://github.com/${context.actor}|${context.actor}>`
-  const commitStr = `\`<${repoUrl}/commit/${context.sha}|${context.sha.substring(0, 7)}>\``
+  const commitStr = context.sha ? `\`<${repoUrl}/commit/${context.sha}|${context.sha.substring(0, 7)}>\` ` : ''
 
   return {
     type: 'section',
     text: {
       type: 'mrkdwn',
-      text: `${composeStatusText(context, inputs)}\n- ${context.commitMessage} (${commitStr} by ${actorLink})`,
+      text: `${composeStatusText(context, inputs)}\n- ${context.commitMessage} (${commitStr}by ${actorLink})`,
     },
   }
 }
@@ -129,7 +138,7 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
   const repoUrl = `https://github.com/${context.repo}`
   const repoStr = `<${repoUrl}|${context.repo}>`
   const refStr = `<${repoUrl}/tree/${refName}|${refName}>`
-  const shaStr = `\`<${repoUrl}/commit/${context.sha}|${context.sha.substring(0, 7)}>\``
+  const shaStr = context.sha ? `\`<${repoUrl}/commit/${context.sha}|${context.sha.substring(0, 7)}>\` ` : ''
   const workflowStr = `*<${repoUrl}/actions?query=workflow%3A${context.workflow}|${context.workflow}>*`
 
   titleStr += ` in ${repoStr} \`${refStr}\``
@@ -140,7 +149,7 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
     footer_icon: actorImage,
     footer: `${actorLink} using workflow ${workflowStr}`,
     mrkdwn_in: ['text', 'footer'],
-    text: `${titleStr}\n${shaStr} ${context.commitMessage}`,
+    text: `${titleStr}\n${shaStr}${context.commitMessage}`,
     actions: composeActionsBlock(context, inputs).elements.map(action => ({
       type: 'button',
       text: action.text.text,
