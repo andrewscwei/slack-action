@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/andrewscwei/slack-action/compare/v1.4.0...v1.5.0) (2024-10-16)
+
+
+### Features
+
+* Handle PR messages properly ([dbf5ad8](https://github.com/andrewscwei/slack-action/commit/dbf5ad853682f69d1798fcbf874276ae51e0996b))
+
 # [1.4.0](https://github.com/andrewscwei/slack-action/compare/v1.3.0...v1.4.0) (2024-09-05)
 
 
