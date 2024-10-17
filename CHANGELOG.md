@@ -1,3 +1,10 @@
+## [1.6.3](https://github.com/andrewscwei/slack-action/compare/v1.6.2...v1.6.3) (2024-10-17)
+
+
+### Bug Fixes
+
+* Release pipeline ([5d2a7fd](https://github.com/andrewscwei/slack-action/commit/5d2a7fdb53f387bb46b4d3938a172e27e3cc924d))
+
 ## [1.6.2](https://github.com/andrewscwei/slack-action/compare/v1.6.1...v1.6.2) (2024-10-17)
 
 
