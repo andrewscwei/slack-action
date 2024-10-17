@@ -1,3 +1,18 @@
+# [1.6.0](https://github.com/andrewscwei/slack-action/compare/v1.5.1...v1.6.0) (2024-10-17)
+
+
+### Bug Fixes
+
+* Major release ([bb351f6](https://github.com/andrewscwei/slack-action/commit/bb351f66d450f5da49ea34d0877a3e798d26811c))
+* Major release ([76bc172](https://github.com/andrewscwei/slack-action/commit/76bc1723b00b3d9bae8773f9d3bd4723db543c98))
+* Release pipeline ([aa1716d](https://github.com/andrewscwei/slack-action/commit/aa1716d77abcf522a217393f1689147cf4a09c04))
+* Release pipeline ([5d2a7fd](https://github.com/andrewscwei/slack-action/commit/5d2a7fdb53f387bb46b4d3938a172e27e3cc924d))
+
+
+### Features
+
+* Upgrade dependencies ([c47d87b](https://github.com/andrewscwei/slack-action/commit/c47d87b19d3cd268ea248a46194d815e00778e0d))
+
 ## [1.5.1](https://github.com/andrewscwei/slack-action/compare/v1.5.0...v1.5.1) (2024-10-16)
 
 ### Bug Fixes
