@@ -2,8 +2,6 @@ name: Release
 on:
   push:
     branches: [master]
-permissions:
-  contents: write
 concurrency:
   group: deploy
   cancel-in-progress: true
@@ -12,8 +10,10 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     env:
-      GITHUB_USER: github-actions[bot]
-      GITHUB_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+      GIT_AUTHOR_NAME: github-actions[bot]
+      GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+      GIT_COMMITTER_NAME: github-actions[bot]
+      GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
@@ -34,8 +34,8 @@ jobs:
           else
             MAJOR_VERSION="$(cut -d '.' -f 1 <<< "$VERSION")"
 
-            git config user.name "${GITHUB_USER}"
-            git config user.email "${GITHUB_EMAIL}"
+            git config user.name "${GIT_AUTHOR_NAME}"
+            git config user.email "${GIT_AUTHOR_EMAIL}"
             git tag -fa ${MAJOR_VERSION} -m "Map ${MAJOR_VERSION} to ${VERSION}"
             git push origin ${MAJOR_VERSION} --force
 
