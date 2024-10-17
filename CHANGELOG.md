@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/andrewscwei/slack-action/compare/v1.6.1...v1.6.2) (2024-10-17)
+
+
+### Bug Fixes
+
+* Major release ([bb351f6](https://github.com/andrewscwei/slack-action/commit/bb351f66d450f5da49ea34d0877a3e798d26811c))
+
 ## [1.6.1](https://github.com/andrewscwei/slack-action/compare/v1.6.0...v1.6.1) (2024-10-17)
 
 
