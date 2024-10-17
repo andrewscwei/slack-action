@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/andrewscwei/slack-action/compare/v1.5.1...v1.6.0) (2024-10-17)
+
+
+### Features
+
+* Upgrade dependencies ([c47d87b](https://github.com/andrewscwei/slack-action/commit/c47d87b19d3cd268ea248a46194d815e00778e0d))
+
 ## [1.5.1](https://github.com/andrewscwei/slack-action/compare/v1.5.0...v1.5.1) (2024-10-16)
 
 
