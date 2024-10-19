@@ -26,11 +26,12 @@ export function composeStatusText(context: Context, inputs: Inputs) {
     statusStr += `${prefix(inputs.prefixes.failure)}*BUILD FAILED*`
   }
 
+  const repoUrl = `https://github.com/${context.repo}`
+  const repoStr = `<${repoUrl}|${context.repo}>`
+
   if (context.ref.startsWith('refs/pull/')) {
     const matches = `${context.ref}`.match(/^refs\/pull\/([^/]+)\/.*$/)
     const prNumber = matches?.[1] ?? context.ref
-    const repoUrl = `https://github.com/${context.repo}`
-    const repoStr = `<${repoUrl}|${context.repo}>`
     const refStr = `<${repoUrl}/pull/${prNumber}|pr-\\#${prNumber}>`
 
     statusStr += ` in ${repoStr} \`${refStr}\``
@@ -38,8 +39,6 @@ export function composeStatusText(context: Context, inputs: Inputs) {
   else {
     const matches = `${context.ref}`.match(/^refs\/[^/]+\/(.*)$/)
     const refName = matches?.[1] ?? context.ref
-    const repoUrl = `https://github.com/${context.repo}`
-    const repoStr = `<${repoUrl}|${context.repo}>`
     const refStr = `<${repoUrl}/tree/${refName}|${refName}>`
 
     statusStr += ` in ${repoStr} \`${refStr}\``
