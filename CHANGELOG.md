@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/andrewscwei/slack-action/compare/v1.9.0...v1.9.1) (2024-10-19)
+
+
+### Bug Fixes
+
+* PR messages ([7f357c0](https://github.com/andrewscwei/slack-action/commit/7f357c04acf76148a45521d71467076bb2f10c3e))
+
 # [1.9.0](https://github.com/andrewscwei/slack-action/compare/v1.8.3...v1.9.0) (2024-10-19)
 
 
