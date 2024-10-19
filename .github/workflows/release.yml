@@ -3,7 +3,7 @@ on:
   push:
     branches: [master]
 concurrency:
-  group: deploy
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   release:
@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Build
         id: build
-        uses: andrewscwei/actions/node-build@v1
+        uses: andrewscwei/actions/node-build@v2
         with:
           prebuild-command: npm run unit
       - name: Release semantic version

@@ -1,4 +1,5 @@
 import * as core from '@actions/core'
+import ansiStyles from 'ansi-styles'
 import { sendMessage } from './core/sendMessage.js'
 import { compose } from './utils/compose.js'
 import { getContext } from './utils/context.js'
@@ -9,19 +10,21 @@ async function main() {
   const inputs = getInputs()
   const message = compose(context, inputs)
 
-  core.info('Sending message via Slack API:')
-  core.info(JSON.stringify(message, undefined, 2))
+  try {
+    core.info('Sending message to Slack...')
+    core.info(`context=${JSON.stringify(context, undefined, 2)}`)
+    core.info(`payload=${JSON.stringify(message, undefined, 2)}`)
 
-  return sendMessage(message, {
-    webhookUrl: inputs.webhookUrl,
-  })
+    const res = await sendMessage(message, {
+      webhookUrl: inputs.webhookUrl,
+    })
+
+    core.info(`Sending message to Slack... ${ansiStyles.green}OK${ansiStyles.reset}: response=${res}`)
+  }
+  catch (err) {
+    core.error(`Failed to send message to Slack: ${err}`)
+    core.setFailed(`Action failed with error from Slack API error: ${err}`)
+  }
 }
 
 main()
-  .then(res => {
-    core.info(`Slack API response: ${res}`)
-    core.setOutput('response', res)
-  })
-  .catch(err => {
-    core.setFailed(`Slack API error: ${err.message}`)
-  })

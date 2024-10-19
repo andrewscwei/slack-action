@@ -28,7 +28,7 @@
   },
   "exclude": [
     "node_modules",
-    "build"
+    "dist"
   ],
   "include": [
     "src/**/*.ts"
