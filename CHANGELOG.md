@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/andrewscwei/slack-action/compare/v1.10.0...v1.10.1) (2024-10-19)
+
+
+### Bug Fixes
+
+* Minor logging issues ([fe9fa6b](https://github.com/andrewscwei/slack-action/commit/fe9fa6b1550fbd1a1f4478b3e41030ca7da72c81))
+
 # [1.10.0](https://github.com/andrewscwei/slack-action/compare/v1.9.1...v1.10.0) (2024-10-19)
 
 
