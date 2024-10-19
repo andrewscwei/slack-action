@@ -12,6 +12,10 @@ with:
   webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
 ```
 
+## Logging
+
+Access more verbose debug logs by [setting the secret](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-encrypted-secrets) `ACTIONS_STEP_DEBUG` to `true`.
+
 ## Inputs
 
 ### `success-prefix`
@@ -45,9 +49,3 @@ Link of the action button. If provided along with `action-label`, the action but
 ### `verbose`
 
 Posts a more detailed version of the alert if enabled (defaults to `true`).
-
-## Outputs
-
-### `response`
-
-The response of the Slack API request.

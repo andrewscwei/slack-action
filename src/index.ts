@@ -12,8 +12,8 @@ async function main() {
 
   try {
     core.info('Sending message to Slack...')
-    core.info(`context=${JSON.stringify(context, undefined, 2)}`)
-    core.info(`payload=${JSON.stringify(message, undefined, 2)}`)
+    core.debug(`context=${JSON.stringify(context, undefined, 2)}`)
+    core.debug(`payload=${JSON.stringify(message, undefined, 2)}`)
 
     const res = await sendMessage(message, {
       webhookUrl: inputs.webhookUrl,
@@ -23,6 +23,7 @@ async function main() {
   }
   catch (err) {
     core.error(`Failed to send message to Slack: ${err}`)
+
     core.setFailed(`Action failed with error from Slack API error: ${err}`)
   }
 }
