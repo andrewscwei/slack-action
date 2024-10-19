@@ -35,9 +35,30 @@ jobs:
             echo "No major version to publish" >> $GITHUB_STEP_SUMMARY
           else
             MAJOR_VERSION="$(cut -d '.' -f 1 <<< "$VERSION")"
+            COMMIT_MESSAGE="$(git log -1 --pretty=%B)"
+
+            if [ `git branch | grep ${MAJOR_VERSION}` ]; then git branch -D ${MAJOR_VERSION}; fi
+            git checkout -b ${MAJOR_VERSION}
+
+            npm run build
+            npm prune --production
+
+            find . -maxdepth 1 \
+              ! -name '.' \
+              ! -name '..' \
+              ! -name ${DIST_DIR} \
+              ! -name '.git' \
+              ! -name 'action.yml' \
+              ! -name 'node_modules' \
+              ! -name 'package.json' \
+              ! -name 'README.md' \
+              -exec rm -rf {} \;
 
             git config user.name "${GIT_AUTHOR_NAME}"
             git config user.email "${GIT_AUTHOR_EMAIL}"
+            git add -fA
+            git commit --allow-empty -m "${COMMIT_MESSAGE}"
+            git push -f --set-upstream ${ORIGIN_URL} ${MAJOR_VERSION}
             git tag -fa ${MAJOR_VERSION} -m "Map ${MAJOR_VERSION} to ${VERSION}"
             git push origin ${MAJOR_VERSION} --force
 
