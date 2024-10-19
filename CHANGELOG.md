@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/andrewscwei/slack-action/compare/v1.9.1...v1.10.0) (2024-10-19)
+
+
+### Features
+
+* Polish message for PRs ([af3b273](https://github.com/andrewscwei/slack-action/commit/af3b2739acd3bb46753b8b14650504ca7ab86e75))
+
 ## [1.9.1](https://github.com/andrewscwei/slack-action/compare/v1.9.0...v1.9.1) (2024-10-19)
 
 
