@@ -1,6 +1,6 @@
 {
   "name": "slack-action",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "A GitHub Action for sending build status alerts to a Slack channel",
   "private": true,
   "type": "module",
