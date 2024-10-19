@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/andrewscwei/slack-action/compare/v1.7.0...v1.8.0) (2024-10-19)
+
+
+### Features
+
+* Improve debug logging ([e9923af](https://github.com/andrewscwei/slack-action/commit/e9923af371d84b90fec03ac8e71e093faa1c6c0d))
+
 # [1.7.0](https://github.com/andrewscwei/slack-action/compare/v1.6.0...v1.7.0) (2024-10-19)
 
 
