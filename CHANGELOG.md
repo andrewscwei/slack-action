@@ -1,3 +1,10 @@
+## [1.8.3](https://github.com/andrewscwei/slack-action/compare/v1.8.2...v1.8.3) (2024-10-19)
+
+
+### Bug Fixes
+
+* Fix major releases ([6cf4e41](https://github.com/andrewscwei/slack-action/commit/6cf4e414e986648618731284572f13779cef6210))
+
 ## [1.8.2](https://github.com/andrewscwei/slack-action/compare/v1.8.1...v1.8.2) (2024-10-19)
 
 
