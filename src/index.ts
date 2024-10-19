@@ -1,4 +1,5 @@
 import * as core from '@actions/core'
+import * as github from '@actions/github'
 import ansiStyles from 'ansi-styles'
 import { sendMessage } from './core/sendMessage.js'
 import { compose } from './utils/compose.js'
@@ -12,7 +13,7 @@ async function main() {
 
   try {
     core.info('Sending message to Slack...')
-    core.debug(`context=${JSON.stringify(context, undefined, 2)}`)
+    core.debug(`context=${JSON.stringify(github.context, undefined, 2)}`)
     core.debug(`payload=${JSON.stringify(message, undefined, 2)}`)
 
     const res = await sendMessage(message, {
