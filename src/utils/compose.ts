@@ -71,7 +71,19 @@ export function composeActorBlock(context: Context, inputs: Inputs) {
 export function composeBodyBlock(context: Context, inputs: Inputs) {
   const repoUrl = `https://github.com/${context.repo}`
   const actorLink = `<https://github.com/${context.actor}|${context.actor}>`
-  const commitStr = context.sha ? `\`<${repoUrl}/commit/${context.sha}|${context.sha.substring(0, 7)}>\` ` : ''
+  let commitStr = ''
+
+  if (context.sha) {
+    if (context.ref.startsWith('refs/pull/')) {
+      const matches = `${context.ref}`.match(/^refs\/pull\/([^/]+)\/.*$/)
+      const prNumber = matches?.[1] ?? context.ref
+
+      commitStr = `\`<${repoUrl}/pull/${prNumber}/commits/${context.sha}|${context.sha.substring(0, 7)}>\` `
+    }
+    else {
+      commitStr = `\`<${repoUrl}/commit/${context.sha}|${context.sha.substring(0, 7)}>\` `
+    }
+  }
 
   return {
     type: 'section',
@@ -119,6 +131,7 @@ export function composeActionsBlock(context: Context, inputs: Inputs) {
 
 export function composeBodyAttachment(context: Context, inputs: Inputs) {
   let titleStr = ''
+  let bodyStr = context.commitMessage
 
   if (inputs.isCancelled) {
     titleStr += `${prefix(inputs.prefixes.cancelled)}*BUILD CANCELLED*`
@@ -136,9 +149,15 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
     const matches = `${context.ref}`.match(/^refs\/pull\/([^/]+)\/.*$/)
     const prNumber = matches?.[1] ?? context.ref
     const repoStr = `<${repoUrl}|${context.repo}>`
-    const refStr = `<${repoUrl}/pull/${prNumber}|pr-\\#${prNumber}>`
+    /* eslint-disable-next-line no-useless-escape */
+    const refStr = `<${repoUrl}/pull/${prNumber}|pr-\#${prNumber}>`
 
     titleStr += ` in ${repoStr} \`${refStr}\``
+
+    if (context.sha) {
+      const shaStr = `\`<${repoUrl}/pull/${prNumber}/commits/${context.sha}|${context.sha.substring(0, 7)}>\``
+      bodyStr = `${shaStr} ${bodyStr}`
+    }
   }
   else {
     const matches = `${context.ref}`.match(/^refs\/[^/]+\/(.*)$/)
@@ -147,11 +166,15 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
     const refStr = `<${repoUrl}/tree/${refName}|${refName}>`
 
     titleStr += ` in ${repoStr} \`${refStr}\``
+
+    if (context.sha) {
+      const shaStr = `\`<${repoUrl}/commit/${context.sha}|${context.sha.substring(0, 7)}>\``
+      bodyStr = `${shaStr} ${bodyStr}`
+    }
   }
 
   const actorImage = `https://avatars.githubusercontent.com/${context.actor}`
   const actorLink = `<https://github.com/${context.actor}|${context.actor}>`
-  const shaStr = context.sha ? `\`<${repoUrl}/commit/${context.sha}|${context.sha.substring(0, 7)}>\` ` : ''
   const workflowStr = `*<${repoUrl}/actions?query=workflow%3A${context.workflow}|${context.workflow}>*`
 
   return {
@@ -160,7 +183,7 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
     footer_icon: actorImage,
     footer: `${actorLink} using workflow ${workflowStr}`,
     mrkdwn_in: ['text', 'footer'],
-    text: `${titleStr}\n${shaStr}${context.commitMessage}`,
+    text: `${titleStr}\n${bodyStr}`,
     actions: composeActionsBlock(context, inputs).elements.map(action => ({
       type: 'button',
       text: action.text.text,
