@@ -2,8 +2,6 @@ name: Release
 on:
   push:
     branches: [master]
-permissions:
-  contents: write
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -34,8 +32,10 @@ jobs:
           if [ -z $VERSION ]; then
             echo "No major version to publish" >> $GITHUB_STEP_SUMMARY
           else
-            MAJOR_VERSION="$(cut -d '.' -f 1 <<< "$VERSION")"
             COMMIT_MESSAGE="$(git log -1 --pretty=%B)"
+            DIST_DIR=dist
+            MAJOR_VERSION="$(cut -d '.' -f 1 <<< "$VERSION")"
+            ORIGIN_URL="https://${GIT_AUTHOR_NAME}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 
             if [ `git branch | grep ${MAJOR_VERSION}` ]; then git branch -D ${MAJOR_VERSION}; fi
             git checkout -b ${MAJOR_VERSION}
