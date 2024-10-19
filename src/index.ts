@@ -25,7 +25,7 @@ async function main() {
   catch (err) {
     core.error(`Failed to send message to Slack: ${err}`)
 
-    core.setFailed(`Action failed with error from Slack API error: ${err}`)
+    core.setFailed(`Action failed with error from Slack API: ${err}`)
   }
 }
 
