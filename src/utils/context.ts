@@ -31,20 +31,20 @@ export function getContext(values?: Partial<Context>): Context {
 }
 
 function getSHA(): string | undefined {
-  switch (github.context.eventName) {
-    case 'pull_request':
-      return github.context.payload['pull_request']?.['head']?.['sha']
-    default:
-      return github.context.sha
+  if (github.context.ref.startsWith('refs/pull/')) {
+    return github.context.payload['pull_request']?.['head']?.['sha']
+  }
+  else {
+    return github.context.sha
   }
 }
 
 function getCommitMessage(): string | undefined {
-  switch (github.context.eventName) {
-    case 'pull_request':
-      return github.context.payload['pull_request']?.title
-    default:
-      return github.context.payload['head_commit']?.['message']
+  if (github.context.ref.startsWith('refs/pull/')) {
+    return github.context.payload['pull_request']?.title
+  }
+  else {
+    return github.context.payload['head_commit']?.['message']
   }
 }
 
