@@ -4,11 +4,9 @@ import { type Inputs } from './inputs.js'
 export function composeNotificationText(context: Context, inputs: Inputs) {
   if (inputs.isCancelled) {
     return `${prefix(inputs.prefixes.cancelled)}BUILD CANCELLED in ${context.repo}`
-  }
-  else if (inputs.isSuccess) {
+  } else if (inputs.isSuccess) {
     return `${prefix(inputs.prefixes.success)}BUILD PASSED in ${context.repo}`
-  }
-  else {
+  } else {
     return `${prefix(inputs.prefixes.failure)}BUILD FAILED in ${context.repo}`
   }
 }
@@ -18,11 +16,9 @@ export function composeStatusText(context: Context, inputs: Inputs) {
 
   if (inputs.isCancelled) {
     statusStr += `${prefix(inputs.prefixes.cancelled)}*BUILD CANCELLED*`
-  }
-  else if (inputs.isSuccess) {
+  } else if (inputs.isSuccess) {
     statusStr += `${prefix(inputs.prefixes.success)}*BUILD PASSED*`
-  }
-  else {
+  } else {
     statusStr += `${prefix(inputs.prefixes.failure)}*BUILD FAILED*`
   }
 
@@ -35,8 +31,7 @@ export function composeStatusText(context: Context, inputs: Inputs) {
     const refStr = `<${repoUrl}/pull/${prNumber}|pr-\\#${prNumber}>`
 
     statusStr += ` in ${repoStr} \`${refStr}\``
-  }
-  else {
+  } else {
     const matches = `${context.ref}`.match(/^refs\/[^/]+\/(.*)$/)
     const refName = matches?.[1] ?? context.ref
     const refStr = `<${repoUrl}/tree/${refName}|${refName}>`
@@ -52,18 +47,18 @@ export function composeActorBlock(context: Context, inputs: Inputs) {
   const actorLink = `<https://github.com/${context.actor}|${context.actor}>`
 
   return {
-    type: 'context',
     elements: [
       {
-        type: 'image',
-        image_url: actorImage,
         alt_text: context.actor,
+        image_url: actorImage,
+        type: 'image',
       },
       {
-        type: 'mrkdwn',
         text: actorLink,
+        type: 'mrkdwn',
       },
     ],
+    type: 'context',
   }
 }
 
@@ -78,18 +73,17 @@ export function composeBodyBlock(context: Context, inputs: Inputs) {
       const prNumber = matches?.[1] ?? context.ref
 
       commitStr = `\`<${repoUrl}/pull/${prNumber}/commits/${context.sha}|${context.sha.substring(0, 7)}>\` `
-    }
-    else {
+    } else {
       commitStr = `\`<${repoUrl}/commit/${context.sha}|${context.sha.substring(0, 7)}>\` `
     }
   }
 
   return {
-    type: 'section',
     text: {
-      type: 'mrkdwn',
       text: `${composeStatusText(context, inputs)}\n- ${context.commitMessage} (${commitStr}by ${actorLink})`,
+      type: 'mrkdwn',
     },
+    type: 'section',
   }
 }
 
@@ -99,32 +93,32 @@ export function composeActionsBlock(context: Context, inputs: Inputs) {
   const buttons = []
 
   buttons.push({
-    type: 'button',
     text: {
-      type: 'plain_text',
-      text: 'View job',
       emoji: true,
+      text: 'View job',
+      type: 'plain_text',
     },
+    type: 'button',
     url: jobUrl,
     ...inputs.isSuccess ? {} : { style: 'danger' },
   })
 
   if (inputs.isSuccess && inputs.action) {
     buttons.push({
-      type: 'button',
-      text: {
-        type: 'plain_text',
-        text: inputs.action.label,
-        emoji: true,
-      },
       style: 'primary',
+      text: {
+        emoji: true,
+        text: inputs.action.label,
+        type: 'plain_text',
+      },
+      type: 'button',
       url: inputs.action.url,
     })
   }
 
   return {
-    type: 'actions',
     elements: buttons,
+    type: 'actions',
   }
 }
 
@@ -134,11 +128,9 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
 
   if (inputs.isCancelled) {
     titleStr += `${prefix(inputs.prefixes.cancelled)}*BUILD CANCELLED*`
-  }
-  else if (inputs.isSuccess) {
+  } else if (inputs.isSuccess) {
     titleStr += `${prefix(inputs.prefixes.success)}*BUILD PASSED*`
-  }
-  else {
+  } else {
     titleStr += `${prefix(inputs.prefixes.failure)}*BUILD FAILED*`
   }
 
@@ -157,8 +149,7 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
       const shaStr = `\`<${repoUrl}/pull/${prNumber}/commits/${context.sha}|${context.sha.substring(0, 7)}>\``
       bodyStr = `${shaStr} ${bodyStr}`
     }
-  }
-  else {
+  } else {
     const matches = `${context.ref}`.match(/^refs\/[^/]+\/(.*)$/)
     const refName = matches?.[1] ?? context.ref
     const repoStr = `<${repoUrl}|${context.repo}>`
@@ -177,18 +168,18 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
   const workflowStr = `*<${repoUrl}/actions?query=workflow%3A${context.workflow}|${context.workflow}>*`
 
   return {
-    color: inputs.isSuccess ? '#2eb67d' : '#e01e5a',
-    fallback: composeNotificationText(context, inputs),
-    footer_icon: actorImage,
-    footer: `${actorLink} using workflow ${workflowStr}`,
-    mrkdwn_in: ['text', 'footer'],
-    text: `${titleStr}\n${bodyStr}`,
     actions: composeActionsBlock(context, inputs).elements.map(action => ({
-      type: 'button',
-      text: action.text.text,
       style: action.style,
+      text: action.text.text,
+      type: 'button',
       url: action.url,
     })),
+    color: inputs.isSuccess ? '#2eb67d' : '#e01e5a',
+    fallback: composeNotificationText(context, inputs),
+    footer: `${actorLink} using workflow ${workflowStr}`,
+    footer_icon: actorImage,
+    mrkdwn_in: ['text', 'footer'],
+    text: `${titleStr}\n${bodyStr}`,
   }
 }
 
@@ -199,14 +190,13 @@ export function compose(context: Context, inputs: Inputs) {
         composeBodyAttachment(context, inputs),
       ],
     }
-  }
-  else {
+  } else {
     return {
-      text: composeNotificationText(context, inputs),
       blocks: [
         composeBodyBlock(context, inputs),
         composeActionsBlock(context, inputs),
       ],
+      text: composeNotificationText(context, inputs),
     }
   }
 }

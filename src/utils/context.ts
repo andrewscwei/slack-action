@@ -1,9 +1,9 @@
 import * as github from '@actions/github'
 
 export type Context = {
+  ref: string
   actor: string
   commitMessage?: string
-  ref: string
   repo: string
   runId: string
   sha?: string
@@ -20,9 +20,9 @@ export function getContext(values?: Partial<Context>): Context {
   const workflow = values?.workflow ?? evalOrThrows(() => github.context.workflow, 'workflow')
 
   return {
+    ref,
     actor,
     commitMessage,
-    ref,
     repo,
     runId,
     sha,
@@ -33,17 +33,15 @@ export function getContext(values?: Partial<Context>): Context {
 function getSHA(): string | undefined {
   if (github.context.ref.startsWith('refs/pull/')) {
     return github.context.payload['pull_request']?.['head']?.['sha']
-  }
-  else {
+  } else {
     return github.context.sha
   }
 }
 
 function getCommitMessage(): string | undefined {
-  if (github.context.ref.startsWith('refs/pull/')) {
+  if (github.context.ref?.startsWith('refs/pull/')) {
     return github.context.payload['pull_request']?.title
-  }
-  else {
+  } else {
     return github.context.payload['head_commit']?.['message']
   }
 }
@@ -54,8 +52,7 @@ function evalOrThrows(expression: () => string | undefined, id: string): string 
     if (value === undefined) throw Error(`Expression with ID <${id}> evaluated to undefined value`)
 
     return value
-  }
-  catch (err) {
-    throw Error(`Error evaluating expression with ID <${id}>`)
+  } catch (err) {
+    throw Error(`Error evaluating expression with ID <${id}>`, { cause: err })
   }
 }

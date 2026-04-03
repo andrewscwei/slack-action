@@ -22,7 +22,7 @@ jobs:
         id: build
         uses: andrewscwei/actions/node-build@v2
         with:
-          prebuild-command: npm run unit
+          prebuild-command: npm test
       - name: Release semantic version
         run: npx semantic-release
       - name: Release major version
@@ -69,7 +69,7 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - uses: andrewscwei/telegram-action@v1
+      - uses: andrewscwei/telegram-action@v2
         with:
           success: ${{ needs.release.result == 'success' }}
           cancelled: ${{ needs.release.result == 'cancelled' }}

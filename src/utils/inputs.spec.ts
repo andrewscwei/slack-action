@@ -1,5 +1,6 @@
 import { assert } from 'chai'
 import { describe, it } from 'mocha'
+
 import { getBooleanInput, getInputs, getStringInput } from './inputs.js'
 
 describe('inputs', () => {
@@ -29,26 +30,26 @@ describe('inputs', () => {
     assert.deepEqual(getInputs({
       webhookUrl: 'foo',
     }), {
-      prefixes: { success: '🤖', failure: '😱', cancelled: '🫥' },
+      prefixes: { cancelled: '🫥', failure: '😱', success: '🤖' },
       webhookUrl: 'foo',
-      isSuccess: false,
       isCancelled: false,
+      isSuccess: false,
       isVerbose: true,
     })
 
     assert.deepEqual(getInputs({
-      prefixes: { success: 'bar', failure: 'baz', cancelled: 'qux' },
+      action: { label: 'bar', url: 'baz' },
+      prefixes: { cancelled: 'qux', failure: 'baz', success: 'bar' },
+      webhookUrl: 'foo',
       isSuccess: true,
       isVerbose: false,
-      webhookUrl: 'foo',
-      action: { label: 'bar', url: 'baz' },
     }), {
-      prefixes: { success: 'bar', failure: 'baz', cancelled: 'qux' },
-      webhookUrl: 'foo',
-      isSuccess: true,
-      isCancelled: false,
-      isVerbose: false,
       action: { label: 'bar', url: 'baz' },
+      prefixes: { cancelled: 'qux', failure: 'baz', success: 'bar' },
+      webhookUrl: 'foo',
+      isCancelled: false,
+      isSuccess: true,
+      isVerbose: false,
     })
   })
 })

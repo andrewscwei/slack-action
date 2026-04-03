@@ -1,13 +1,14 @@
 import { assert } from 'chai'
 import { describe, it } from 'mocha'
+
 import { compose, composeActionsBlock, composeBodyAttachment, composeBodyBlock } from './compose.js'
 import { getContext } from './context.js'
 import { getInputs } from './inputs.js'
 
 describe('compose', () => {
   const mockContext = getContext({
-    actor: 'foo',
     ref: 'foo',
+    actor: 'foo',
     repo: 'foo',
     runId: 'foo',
     sha: 'foo',
@@ -15,17 +16,17 @@ describe('compose', () => {
   })
 
   const mockSuccessInputs = getInputs({
-    prefixes: { success: 'bar', failure: 'baz', cancelled: 'qux' },
-    isSuccess: true,
-    webhookUrl: 'foo',
     action: { label: 'bar', url: 'baz' },
+    prefixes: { cancelled: 'qux', failure: 'baz', success: 'bar' },
+    webhookUrl: 'foo',
+    isSuccess: true,
   })
 
   const mockFailureInputs = getInputs({
-    prefixes: { success: 'bar', failure: 'baz', cancelled: 'qux' },
-    isSuccess: false,
-    webhookUrl: 'foo',
     action: { label: 'bar', url: 'baz' },
+    prefixes: { cancelled: 'qux', failure: 'baz', success: 'bar' },
+    webhookUrl: 'foo',
+    isSuccess: false,
   })
 
   it('can compose body block', () => {

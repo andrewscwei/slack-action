@@ -1,4 +1,5 @@
 import { describe, it } from 'mocha'
+
 import { sendMessage } from './sendMessage.js'
 
 describe('sendMessage', () => {

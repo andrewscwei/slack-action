@@ -1,6 +1,7 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 import ansiStyles from 'ansi-styles'
+
 import { sendMessage } from './core/sendMessage.js'
 import { compose } from './utils/compose.js'
 import { getContext } from './utils/context.js'
@@ -21,8 +22,7 @@ async function main() {
     })
 
     core.info(`Sending message to Slack... ${ansiStyles.green}OK${ansiStyles.reset}: response=${res}`)
-  }
-  catch (err) {
+  } catch (err) {
     core.error(`Failed to send message to Slack: ${err}`)
 
     core.setFailed(`Action failed with error from Slack API: ${err}`)
