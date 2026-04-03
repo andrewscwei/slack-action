@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/andrewscwei/slack-action/compare/v1.10.2...v2.0.0) (2026-04-03)
+
+
+### Build System
+
+* Upgrade dependencies ([95b56de](https://github.com/andrewscwei/slack-action/commit/95b56de36d0955f86ce83d78acf322241cc31c34))
+
+
+### BREAKING CHANGES
+
+* Upgrade Node to v24
+
 ## [1.10.2](https://github.com/andrewscwei/slack-action/compare/v1.10.1...v1.10.2) (2024-10-19)
 
 
