@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/andrewscwei/slack-action/compare/v2.0.0...v2.0.1) (2026-04-03)
+
+
+### Bug Fixes
+
+* Fix dist files ([382740e](https://github.com/andrewscwei/slack-action/commit/382740e6e751c5fece16443f8a8f7f06f78c56b5))
+
 # [2.0.0](https://github.com/andrewscwei/slack-action/compare/v1.10.2...v2.0.0) (2026-04-03)
 
 
