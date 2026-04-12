@@ -4,6 +4,7 @@ export type Context = {
   ref: string
   actor: string
   commitMessage?: string
+  eventName: string
   repo: string
   runId: string
   sha?: string
@@ -13,6 +14,7 @@ export type Context = {
 export function getContext(values?: Partial<Context>): Context {
   const actor = values?.actor ?? evalOrThrows(() => github.context.actor, 'actor')
   const commitMessage = values?.commitMessage ?? getCommitMessage()
+  const eventName = values?.eventName ?? evalOrThrows(() => github.context.eventName, 'event-name')
   const ref = values?.ref ?? evalOrThrows(() => github.context.ref, 'ref')
   const repo = values?.repo ?? evalOrThrows(() => `${github.context.repo.owner}/${github.context.repo.repo}`, 'repo')
   const runId = values?.runId ?? evalOrThrows(() => isNaN(github.context.runId) ? undefined : github.context.runId.toString(), 'run-id')
@@ -23,6 +25,7 @@ export function getContext(values?: Partial<Context>): Context {
     ref,
     actor,
     commitMessage,
+    eventName,
     repo,
     runId,
     sha,

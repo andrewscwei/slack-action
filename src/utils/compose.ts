@@ -1,25 +1,35 @@
 import { type Context } from './context.js'
 import { type Inputs } from './inputs.js'
 
+function getLabel(context: Context) {
+  if (context.eventName === 'schedule') return 'CRON'
+  if (context.ref.startsWith('refs/pull/')) return 'MERGE'
+
+  return 'BUILD'
+}
+
 export function composeNotificationText(context: Context, inputs: Inputs) {
+  const label = getLabel(context)
+
   if (inputs.isCancelled) {
-    return `${prefix(inputs.prefixes.cancelled)}BUILD CANCELLED in ${context.repo}`
+    return `${prefix(inputs.prefixes.cancelled)}${label} CANCELLED in ${context.repo}`
   } else if (inputs.isSuccess) {
-    return `${prefix(inputs.prefixes.success)}BUILD PASSED in ${context.repo}`
+    return `${prefix(inputs.prefixes.success)}${label} PASSED in ${context.repo}`
   } else {
-    return `${prefix(inputs.prefixes.failure)}BUILD FAILED in ${context.repo}`
+    return `${prefix(inputs.prefixes.failure)}${label} FAILED in ${context.repo}`
   }
 }
 
 export function composeStatusText(context: Context, inputs: Inputs) {
+  const label = getLabel(context)
   let statusStr = ''
 
   if (inputs.isCancelled) {
-    statusStr += `${prefix(inputs.prefixes.cancelled)}*BUILD CANCELLED*`
+    statusStr += `${prefix(inputs.prefixes.cancelled)}*${label} CANCELLED*`
   } else if (inputs.isSuccess) {
-    statusStr += `${prefix(inputs.prefixes.success)}*BUILD PASSED*`
+    statusStr += `${prefix(inputs.prefixes.success)}*${label} PASSED*`
   } else {
-    statusStr += `${prefix(inputs.prefixes.failure)}*BUILD FAILED*`
+    statusStr += `${prefix(inputs.prefixes.failure)}*${label} FAILED*`
   }
 
   const repoUrl = `https://github.com/${context.repo}`
@@ -130,12 +140,14 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
   let titleStr = ''
   let bodyStr = context.commitMessage ?? ''
 
+  const label = getLabel(context)
+
   if (inputs.isCancelled) {
-    titleStr += `${prefix(inputs.prefixes.cancelled)}*BUILD CANCELLED*`
+    titleStr += `${prefix(inputs.prefixes.cancelled)}*${label} CANCELLED*`
   } else if (inputs.isSuccess) {
-    titleStr += `${prefix(inputs.prefixes.success)}*BUILD PASSED*`
+    titleStr += `${prefix(inputs.prefixes.success)}*${label} PASSED*`
   } else {
-    titleStr += `${prefix(inputs.prefixes.failure)}*BUILD FAILED*`
+    titleStr += `${prefix(inputs.prefixes.failure)}*${label} FAILED*`
   }
 
   const repoUrl = `https://github.com/${context.repo}`

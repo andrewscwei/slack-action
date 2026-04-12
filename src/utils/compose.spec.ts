@@ -9,6 +9,7 @@ describe('compose', () => {
   const mockContext = getContext({
     ref: 'foo',
     actor: 'foo',
+    eventName: 'push',
     repo: 'foo',
     runId: 'foo',
     sha: 'foo',
