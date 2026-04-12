@@ -1,3 +1,12 @@
+# [2.1.0](https://github.com/andrewscwei/slack-action/compare/v2.0.1...v2.1.0) (2026-04-12)
+
+
+### Features
+
+* Add default label to action button ([b86603a](https://github.com/andrewscwei/slack-action/commit/b86603a4efdd5f2c8ea8318ebc2a2c9cc9f64151))
+* Handle empty commit messages ([f3be50a](https://github.com/andrewscwei/slack-action/commit/f3be50a4d35990e7064125dc2d2a5db3490cf657))
+* Use different labels for PRs and CRON jobs ([c469355](https://github.com/andrewscwei/slack-action/commit/c469355affed250f3458327908bbc06f2472d966))
+
 ## [2.0.1](https://github.com/andrewscwei/slack-action/compare/v2.0.0...v2.0.1) (2026-04-03)
 
 
