@@ -78,9 +78,13 @@ export function composeBodyBlock(context: Context, inputs: Inputs) {
     }
   }
 
+  const detailStr = context.commitMessage
+    ? `\n- ${context.commitMessage} (${commitStr}by ${actorLink})`
+    : `\n- by ${actorLink}`
+
   return {
     text: {
-      text: `${composeStatusText(context, inputs)}\n- ${context.commitMessage} (${commitStr}by ${actorLink})`,
+      text: `${composeStatusText(context, inputs)}${detailStr}`,
       type: 'mrkdwn',
     },
     type: 'section',
@@ -124,7 +128,7 @@ export function composeActionsBlock(context: Context, inputs: Inputs) {
 
 export function composeBodyAttachment(context: Context, inputs: Inputs) {
   let titleStr = ''
-  let bodyStr = context.commitMessage
+  let bodyStr = context.commitMessage ?? ''
 
   if (inputs.isCancelled) {
     titleStr += `${prefix(inputs.prefixes.cancelled)}*BUILD CANCELLED*`
@@ -145,7 +149,7 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
 
     titleStr += ` in ${repoStr} \`${refStr}\``
 
-    if (context.sha) {
+    if (context.sha && context.commitMessage) {
       const shaStr = `\`<${repoUrl}/pull/${prNumber}/commits/${context.sha}|${context.sha.substring(0, 7)}>\``
       bodyStr = `${shaStr} ${bodyStr}`
     }
@@ -157,7 +161,7 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
 
     titleStr += ` in ${repoStr} \`${refStr}\``
 
-    if (context.sha) {
+    if (context.sha && context.commitMessage) {
       const shaStr = `\`<${repoUrl}/commit/${context.sha}|${context.sha.substring(0, 7)}>\``
       bodyStr = `${shaStr} ${bodyStr}`
     }
@@ -179,7 +183,7 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
     footer: `${actorLink} using workflow ${workflowStr}`,
     footer_icon: actorImage,
     mrkdwn_in: ['text', 'footer'],
-    text: `${titleStr}\n${bodyStr}`,
+    text: bodyStr ? `${titleStr}\n${bodyStr}` : titleStr,
   }
 }
 
