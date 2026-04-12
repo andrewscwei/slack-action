@@ -95,7 +95,7 @@ export function composeActionsBlock(context: Context, inputs: Inputs) {
   buttons.push({
     text: {
       emoji: true,
-      text: 'View job',
+      text: 'View Job',
       type: 'plain_text',
     },
     type: 'button',

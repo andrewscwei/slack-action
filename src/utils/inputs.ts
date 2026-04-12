@@ -1,5 +1,4 @@
 import * as core from '@actions/core'
-import assert from 'assert'
 
 export type Inputs = {
   action?: {
@@ -47,12 +46,9 @@ export function getInputs(mock?: Partial<Inputs>): Inputs {
   const isSuccess = mock?.isSuccess ?? getBooleanInput('success', false)
   const isCancelled = mock?.isCancelled ?? getBooleanInput('cancelled', false)
   const isVerbose = mock?.isVerbose ?? getBooleanInput('verbose', true)
-  const actionLabel = mock?.action?.label ?? getStringInput('action-label', '')
+  const actionLabel = mock?.action?.label ?? getStringInput('action-label', 'Open')
   const actionUrl = mock?.action?.url ?? getStringInput('action-url', '')
-  const hasAction = actionLabel !== '' && actionUrl !== ''
-  const hasNoAction = !isSuccess || actionLabel === '' && actionUrl === ''
-
-  assert(hasAction || hasNoAction, Error('Both <action-label> and <action-url> inputs must be provided'))
+  const hasAction = isSuccess && actionUrl !== ''
 
   return {
     prefixes: {

@@ -20,10 +20,10 @@ inputs:
     description: Specifies whether this is a cancelled alert.
     required: false
   action-label:
-    description: Label of the action button. If provided along with `action-url`, the action button will be visible if `success` is `true`.
+    description: Label of the action button, defaults to `Open`. The action button is only visible when `action-url` is provided and `success` is `true`.
     required: false
   action-url:
-    description: Link of the action button. If provided along with `action-label`, the action button will be visible if `success` is `true`.
+    description: Link of the action button. When provided, the action button will be visible if `success` is `true`.
     required: false
   verbose:
     description: Posts a more detailed version of the alert if enabled (defaults to `true`).
