@@ -2,7 +2,7 @@ name: Slack Alert
 description: A GitHub Action for sending build status alerts to a Slack channel.
 inputs:
   success-prefix:
-    description: The prefix to use in a success alert, defaults to 😎.
+    description: The prefix to use in a success alert, defaults to 🤖.
     required: false
   failure-prefix:
     description: The prefix to use in a failure alert, defaults to 😱.

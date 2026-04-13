@@ -20,7 +20,7 @@ Access more verbose debug logs by [setting the secret](https://docs.github.com/e
 
 ### `success-prefix`
 
-The prefix to use in a success alert, defaults to 😎.
+The prefix to use in a success alert, defaults to 🤖.
 
 ### `failure-prefix`
 
