@@ -3,7 +3,7 @@ import { type Inputs } from './inputs.js'
 
 function getLabel(context: Context) {
   if (context.eventName === 'schedule') return 'CRON'
-  if (context.ref.startsWith('refs/pull/')) return 'MERGE'
+  if (context.ref.startsWith('refs/pull/')) return 'PR'
 
   return 'BUILD'
 }
