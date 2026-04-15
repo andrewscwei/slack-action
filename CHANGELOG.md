@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/andrewscwei/slack-action/compare/v2.1.0...v2.1.1) (2026-04-15)
+
+
+### Bug Fixes
+
+* Update label for pull request context ([653a2d2](https://github.com/andrewscwei/slack-action/commit/653a2d2cef3155c7bc9e647b849eed9d4ac8a6a9))
+
 # [2.1.0](https://github.com/andrewscwei/slack-action/compare/v2.0.1...v2.1.0) (2026-04-12)
 
 
