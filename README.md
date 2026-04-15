@@ -26,6 +26,10 @@ The prefix to use in a success alert, defaults to 🤖.
 
 The prefix to use in a failure alert, defaults to 😱.
 
+### `cancelled-prefix`
+
+The prefix to use in a cancelled alert, defaults to 🫥.
+
 ### `webhook-url`
 
 **Required**: The incoming webhook URL.
