@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/andrewscwei/slack-action/compare/v2.1.1...v2.2.0) (2026-04-25)
+
+
+### Features
+
+* Properly handle app as actor ([b8a161d](https://github.com/andrewscwei/slack-action/commit/b8a161df6af48eb4ba4c06e106f9382d7f3ced1b))
+
 ## [2.1.1](https://github.com/andrewscwei/slack-action/compare/v2.1.0...v2.1.1) (2026-04-15)
 
 
