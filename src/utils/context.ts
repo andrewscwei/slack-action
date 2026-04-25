@@ -4,7 +4,7 @@ import fetch from 'node-fetch'
 export type Context = {
   ref: string
   actor: string
-  actorAvatarUrl?: string
+  actorAvatarURL?: string
   commitMessage?: string
   eventName: string
   repo: string
@@ -15,7 +15,7 @@ export type Context = {
 
 export function getContext(values?: Partial<Context>): Context {
   const actor = values?.actor ?? evalOrThrows(() => github.context.actor, 'actor')
-  const actorAvatarUrl = values?.actorAvatarUrl
+  const actorAvatarURL = values?.actorAvatarURL
   const commitMessage = values?.commitMessage ?? getCommitMessage()
   const eventName = values?.eventName ?? evalOrThrows(() => github.context.eventName, 'event-name')
   const ref = values?.ref ?? evalOrThrows(() => github.context.ref, 'ref')
@@ -27,7 +27,7 @@ export function getContext(values?: Partial<Context>): Context {
   return {
     ref,
     actor,
-    actorAvatarUrl,
+    actorAvatarURL,
     commitMessage,
     eventName,
     repo,
@@ -37,7 +37,7 @@ export function getContext(values?: Partial<Context>): Context {
   }
 }
 
-export async function resolveActorAvatarUrl(actor: string): Promise<string | undefined> {
+export async function resolveActorAvatarURL(actor: string): Promise<string | undefined> {
   try {
     const headers: Record<string, string> = {
       'Accept': 'application/vnd.github+json',

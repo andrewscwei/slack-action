@@ -3,14 +3,14 @@ import { describe, it } from 'mocha'
 import { sendMessage } from './sendMessage.js'
 
 describe('sendMessage', () => {
-  const webhookUrl = process.env.WEBHOOK_URL || undefined
+  const webhookURL = process.env.WEBHOOK_URL || undefined
 
-  if (webhookUrl) {
+  if (webhookURL) {
     it('can send message', async () => {
       await sendMessage({
         text: 'Hello, world!',
       }, {
-        webhookUrl,
+        webhookURL,
       })
     })
   }

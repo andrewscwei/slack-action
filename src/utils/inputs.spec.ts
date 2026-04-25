@@ -28,10 +28,10 @@ describe('inputs', () => {
 
   it('can get all inputs with custom values', () => {
     assert.deepEqual(getInputs({
-      webhookUrl: 'foo',
+      webhookURL: 'foo',
     }), {
       prefixes: { cancelled: '🫥', failure: '😱', success: '🤖' },
-      webhookUrl: 'foo',
+      webhookURL: 'foo',
       isCancelled: false,
       isSuccess: false,
     })
@@ -39,12 +39,12 @@ describe('inputs', () => {
     assert.deepEqual(getInputs({
       action: { label: 'bar', url: 'baz' },
       prefixes: { cancelled: 'qux', failure: 'baz', success: 'bar' },
-      webhookUrl: 'foo',
+      webhookURL: 'foo',
       isSuccess: true,
     }), {
       action: { label: 'bar', url: 'baz' },
       prefixes: { cancelled: 'qux', failure: 'baz', success: 'bar' },
-      webhookUrl: 'foo',
+      webhookURL: 'foo',
       isCancelled: false,
       isSuccess: true,
     })

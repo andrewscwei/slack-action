@@ -10,7 +10,7 @@ export type Inputs = {
     failure: string
     success: string
   }
-  webhookUrl: string
+  webhookURL: string
   isCancelled: boolean
   isSuccess: boolean
 }
@@ -19,12 +19,12 @@ export function getInputs(mock?: Partial<Inputs>): Inputs {
   const successPrefix = mock?.prefixes?.success ?? getStringInput('success-prefix', '🤖')
   const failurePrefix = mock?.prefixes?.failure ?? getStringInput('failure-prefix', '😱')
   const cancelledPrefix = mock?.prefixes?.cancelled ?? getStringInput('cancelled-prefix', '🫥')
-  const webhookUrl = mock?.webhookUrl ?? getStringInput('webhook-url')
+  const webhookURL = mock?.webhookURL ?? getStringInput('webhook-url')
   const isSuccess = mock?.isSuccess ?? getBooleanInput('success', false)
   const isCancelled = mock?.isCancelled ?? getBooleanInput('cancelled', false)
   const actionLabel = mock?.action?.label ?? getStringInput('action-label', 'Open')
-  const actionUrl = mock?.action?.url ?? getStringInput('action-url', '')
-  const hasAction = isSuccess && actionUrl !== ''
+  const actionURL = mock?.action?.url ?? getStringInput('action-url', '')
+  const hasAction = isSuccess && actionURL !== ''
 
   return {
     prefixes: {
@@ -32,13 +32,13 @@ export function getInputs(mock?: Partial<Inputs>): Inputs {
       failure: failurePrefix,
       success: successPrefix,
     },
-    webhookUrl,
+    webhookURL,
     isCancelled,
     isSuccess,
     ...hasAction ? {
       action: {
         label: actionLabel,
-        url: actionUrl,
+        url: actionURL,
       },
     } : {},
   }

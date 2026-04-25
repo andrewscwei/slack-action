@@ -19,14 +19,14 @@ describe('compose', () => {
   const mockSuccessInputs = getInputs({
     action: { label: 'bar', url: 'baz' },
     prefixes: { cancelled: 'qux', failure: 'baz', success: 'bar' },
-    webhookUrl: 'foo',
+    webhookURL: 'foo',
     isSuccess: true,
   })
 
   const mockFailureInputs = getInputs({
     action: { label: 'bar', url: 'baz' },
     prefixes: { cancelled: 'qux', failure: 'baz', success: 'bar' },
-    webhookUrl: 'foo',
+    webhookURL: 'foo',
     isSuccess: false,
   })
 
@@ -49,7 +49,7 @@ describe('compose', () => {
     const botContext = getContext({
       ref: 'foo',
       actor: 'my-app[bot]',
-      actorAvatarUrl: 'https://avatars.githubusercontent.com/in/42?v=4',
+      actorAvatarURL: 'https://avatars.githubusercontent.com/in/42?v=4',
       eventName: 'push',
       repo: 'foo',
       runId: 'foo',

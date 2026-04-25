@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 
-export async function sendMessage(message: Record<string, any>, { webhookUrl = '' } = {}) {
-  const url = new URL(webhookUrl)
+export async function sendMessage(message: Record<string, any>, { webhookURL = '' } = {}) {
+  const url = new URL(webhookURL)
 
   const res = await fetch(url, {
     body: JSON.stringify(message),

@@ -48,38 +48,38 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
   let titleStr = `*${composeTitle(context, inputs)}*`
   let bodyStr = context.commitMessage ?? ''
 
-  const repoUrl = `https://github.com/${context.repo}`
+  const repoURL = `https://github.com/${context.repo}`
 
   if (context.ref.startsWith('refs/pull/')) {
     const matches = `${context.ref}`.match(/^refs\/pull\/([^/]+)\/.*$/)
     const prNumber = matches?.[1] ?? context.ref
-    const repoStr = `<${repoUrl}|${context.repo}>`
+    const repoStr = `<${repoURL}|${context.repo}>`
     /* eslint-disable-next-line no-useless-escape */
-    const refStr = `<${repoUrl}/pull/${prNumber}|pr-\#${prNumber}>`
+    const refStr = `<${repoURL}/pull/${prNumber}|pr-\#${prNumber}>`
 
     titleStr += ` in ${repoStr} \`${refStr}\``
 
     if (context.sha && context.commitMessage) {
-      const shaStr = `\`<${repoUrl}/pull/${prNumber}/commits/${context.sha}|${context.sha.substring(0, 7)}>\``
+      const shaStr = `\`<${repoURL}/pull/${prNumber}/commits/${context.sha}|${context.sha.substring(0, 7)}>\``
       bodyStr = `${shaStr} ${bodyStr}`
     }
   } else {
     const matches = `${context.ref}`.match(/^refs\/[^/]+\/(.*)$/)
     const refName = matches?.[1] ?? context.ref
-    const repoStr = `<${repoUrl}|${context.repo}>`
-    const refStr = `<${repoUrl}/tree/${refName}|${refName}>`
+    const repoStr = `<${repoURL}|${context.repo}>`
+    const refStr = `<${repoURL}/tree/${refName}|${refName}>`
 
     titleStr += ` in ${repoStr} \`${refStr}\``
 
     if (context.sha && context.commitMessage) {
-      const shaStr = `\`<${repoUrl}/commit/${context.sha}|${context.sha.substring(0, 7)}>\``
+      const shaStr = `\`<${repoURL}/commit/${context.sha}|${context.sha.substring(0, 7)}>\``
       bodyStr = `${shaStr} ${bodyStr}`
     }
   }
 
   const actorImage = getActorImageURL(context)
   const actorLink = `<${getActorLinkURL(context)}|${context.actor}>`
-  const workflowStr = `*<${repoUrl}/actions?query=workflow%3A${context.workflow}|${context.workflow}>*`
+  const workflowStr = `*<${repoURL}/actions?query=workflow%3A${context.workflow}|${context.workflow}>*`
 
   return {
     actions: composeActions(context, inputs).elements.map(action => ({
@@ -137,7 +137,7 @@ export function composeFallback(context: Context, inputs: Inputs) {
 }
 
 function getActorImageURL(context: Context): string {
-  if (context.actorAvatarUrl) return context.actorAvatarUrl
+  if (context.actorAvatarURL) return context.actorAvatarURL
 
   return `https://avatars.githubusercontent.com/${context.actor}`
 }
