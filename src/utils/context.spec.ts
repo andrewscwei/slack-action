@@ -8,6 +8,7 @@ describe('context', () => {
     assert.deepEqual(getContext({
       ref: 'foo',
       actor: 'foo',
+      actorAvatarUrl: 'https://example.com/avatar.png',
       commitMessage: 'foo',
       eventName: 'push',
       repo: 'foo',
@@ -17,6 +18,7 @@ describe('context', () => {
     }), {
       ref: 'foo',
       actor: 'foo',
+      actorAvatarUrl: 'https://example.com/avatar.png',
       commitMessage: 'foo',
       eventName: 'push',
       repo: 'foo',

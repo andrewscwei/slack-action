@@ -1,154 +1,52 @@
 import { type Context } from './context.js'
 import { type Inputs } from './inputs.js'
 
-function getLabel(context: Context) {
-  if (context.eventName === 'schedule') return 'CRON'
-  if (context.ref.startsWith('refs/pull/')) return 'PR'
-
-  return 'BUILD'
-}
-
-export function composeNotificationText(context: Context, inputs: Inputs) {
-  const label = getLabel(context)
-
-  if (inputs.isCancelled) {
-    return `${prefix(inputs.prefixes.cancelled)}${label} CANCELLED in ${context.repo}`
-  } else if (inputs.isSuccess) {
-    return `${prefix(inputs.prefixes.success)}${label} PASSED in ${context.repo}`
-  } else {
-    return `${prefix(inputs.prefixes.failure)}${label} FAILED in ${context.repo}`
-  }
-}
-
-export function composeStatusText(context: Context, inputs: Inputs) {
-  const label = getLabel(context)
-  let statusStr = ''
-
-  if (inputs.isCancelled) {
-    statusStr += `${prefix(inputs.prefixes.cancelled)}*${label} CANCELLED*`
-  } else if (inputs.isSuccess) {
-    statusStr += `${prefix(inputs.prefixes.success)}*${label} PASSED*`
-  } else {
-    statusStr += `${prefix(inputs.prefixes.failure)}*${label} FAILED*`
-  }
-
-  const repoUrl = `https://github.com/${context.repo}`
-  const repoStr = `<${repoUrl}|${context.repo}>`
-
-  if (context.ref.startsWith('refs/pull/')) {
-    const matches = `${context.ref}`.match(/^refs\/pull\/([^/]+)\/.*$/)
-    const prNumber = matches?.[1] ?? context.ref
-    const refStr = `<${repoUrl}/pull/${prNumber}|pr-\\#${prNumber}>`
-
-    statusStr += ` in ${repoStr} \`${refStr}\``
-  } else {
-    const matches = `${context.ref}`.match(/^refs\/[^/]+\/(.*)$/)
-    const refName = matches?.[1] ?? context.ref
-    const refStr = `<${repoUrl}/tree/${refName}|${refName}>`
-
-    statusStr += ` in ${repoStr} \`${refStr}\``
-  }
-
-  return statusStr
-}
-
-export function composeActorBlock(context: Context, inputs: Inputs) {
-  const actorImage = `https://avatars.githubusercontent.com/${context.actor}`
-  const actorLink = `<https://github.com/${context.actor}|${context.actor}>`
-
+export function compose(context: Context, inputs: Inputs) {
   return {
-    elements: [
-      {
-        alt_text: context.actor,
-        image_url: actorImage,
-        type: 'image',
-      },
-      {
-        text: actorLink,
-        type: 'mrkdwn',
-      },
+    attachments: [
+      composeBodyAttachment(context, inputs),
     ],
-    type: 'context',
   }
 }
 
-export function composeBodyBlock(context: Context, inputs: Inputs) {
-  const repoUrl = `https://github.com/${context.repo}`
-  const actorLink = `<https://github.com/${context.actor}|${context.actor}>`
-  let commitStr = ''
+export function composeTitle(context: Context, inputs: Inputs): string {
+  let label: string
+  switch (true) {
+    case context.eventName === 'schedule':
+      label = 'CRON'
+      break
+    case context.ref.startsWith('refs/pull/'):
+      label = 'CHECK'
+      break
+    default:
+      label = 'BUILD'
+  }
 
-  if (context.sha) {
-    if (context.ref.startsWith('refs/pull/')) {
-      const matches = `${context.ref}`.match(/^refs\/pull\/([^/]+)\/.*$/)
-      const prNumber = matches?.[1] ?? context.ref
+  switch (true) {
+    case inputs.isCancelled: {
+      let prefix = inputs.prefixes.cancelled ?? ''
+      if (prefix) prefix += ' '
 
-      commitStr = `\`<${repoUrl}/pull/${prNumber}/commits/${context.sha}|${context.sha.substring(0, 7)}>\` `
-    } else {
-      commitStr = `\`<${repoUrl}/commit/${context.sha}|${context.sha.substring(0, 7)}>\` `
+      return `${prefix}${label} CANCELLED`
     }
-  }
+    case inputs.isSuccess: {
+      let prefix = inputs.prefixes.success ?? ''
+      if (prefix) prefix += ' '
 
-  const detailStr = context.commitMessage
-    ? `\n- ${context.commitMessage} (${commitStr}by ${actorLink})`
-    : `\n- by ${actorLink}`
+      return `${prefix}${label} PASSED`
+    }
+    default: {
+      let prefix = inputs.prefixes.failure ?? ''
+      if (prefix) prefix += ' '
 
-  return {
-    text: {
-      text: `${composeStatusText(context, inputs)}${detailStr}`,
-      type: 'mrkdwn',
-    },
-    type: 'section',
-  }
-}
-
-export function composeActionsBlock(context: Context, inputs: Inputs) {
-  const repoUrl = `https://github.com/${context.repo}`
-  const jobUrl = `${repoUrl}/actions/runs/${context.runId}`
-  const buttons = []
-
-  buttons.push({
-    text: {
-      emoji: true,
-      text: 'View Job',
-      type: 'plain_text',
-    },
-    type: 'button',
-    url: jobUrl,
-    ...inputs.isSuccess ? {} : { style: 'danger' },
-  })
-
-  if (inputs.isSuccess && inputs.action) {
-    buttons.push({
-      style: 'primary',
-      text: {
-        emoji: true,
-        text: inputs.action.label,
-        type: 'plain_text',
-      },
-      type: 'button',
-      url: inputs.action.url,
-    })
-  }
-
-  return {
-    elements: buttons,
-    type: 'actions',
+      return `${prefix}${label} FAILED`
+    }
   }
 }
 
 export function composeBodyAttachment(context: Context, inputs: Inputs) {
-  let titleStr = ''
+  let titleStr = `*${composeTitle(context, inputs)}*`
   let bodyStr = context.commitMessage ?? ''
-
-  const label = getLabel(context)
-
-  if (inputs.isCancelled) {
-    titleStr += `${prefix(inputs.prefixes.cancelled)}*${label} CANCELLED*`
-  } else if (inputs.isSuccess) {
-    titleStr += `${prefix(inputs.prefixes.success)}*${label} PASSED*`
-  } else {
-    titleStr += `${prefix(inputs.prefixes.failure)}*${label} FAILED*`
-  }
 
   const repoUrl = `https://github.com/${context.repo}`
 
@@ -179,19 +77,19 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
     }
   }
 
-  const actorImage = `https://avatars.githubusercontent.com/${context.actor}`
-  const actorLink = `<https://github.com/${context.actor}|${context.actor}>`
+  const actorImage = getActorImageURL(context)
+  const actorLink = `<${getActorLinkURL(context)}|${context.actor}>`
   const workflowStr = `*<${repoUrl}/actions?query=workflow%3A${context.workflow}|${context.workflow}>*`
 
   return {
-    actions: composeActionsBlock(context, inputs).elements.map(action => ({
+    actions: composeActions(context, inputs).elements.map(action => ({
       style: action.style,
       text: action.text.text,
       type: 'button',
       url: action.url,
     })),
     color: inputs.isSuccess ? '#2eb67d' : '#e01e5a',
-    fallback: composeNotificationText(context, inputs),
+    fallback: composeFallback(context, inputs),
     footer: `${actorLink} using workflow ${workflowStr}`,
     footer_icon: actorImage,
     mrkdwn_in: ['text', 'footer'],
@@ -199,26 +97,57 @@ export function composeBodyAttachment(context: Context, inputs: Inputs) {
   }
 }
 
-export function compose(context: Context, inputs: Inputs) {
-  if (inputs.isVerbose) {
-    return {
-      attachments: [
-        composeBodyAttachment(context, inputs),
-      ],
-    }
-  } else {
-    return {
-      blocks: [
-        composeBodyBlock(context, inputs),
-        composeActionsBlock(context, inputs),
-      ],
-      text: composeNotificationText(context, inputs),
-    }
+export function composeActions(context: Context, inputs: Inputs) {
+  const repoURL = `https://github.com/${context.repo}`
+  const jobURL = `${repoURL}/actions/runs/${context.runId}`
+  const buttons = []
+
+  buttons.push({
+    text: {
+      emoji: true,
+      text: 'View Job',
+      type: 'plain_text',
+    },
+    type: 'button',
+    url: jobURL,
+    ...inputs.isSuccess ? {} : { style: 'danger' },
+  })
+
+  if (inputs.isSuccess && inputs.action) {
+    buttons.push({
+      style: 'primary',
+      text: {
+        emoji: true,
+        text: inputs.action.label,
+        type: 'plain_text',
+      },
+      type: 'button',
+      url: inputs.action.url,
+    })
+  }
+
+  return {
+    elements: buttons,
+    type: 'actions',
   }
 }
 
-function prefix(value?: string) {
-  if (value === undefined || value === null || value === '') return ''
+export function composeFallback(context: Context, inputs: Inputs) {
+  return `${composeTitle(context, inputs)} in ${context.repo}`
+}
 
-  return `${value} `
+function getActorImageURL(context: Context): string {
+  if (context.actorAvatarUrl) return context.actorAvatarUrl
+
+  return `https://avatars.githubusercontent.com/${context.actor}`
+}
+
+function getActorLinkURL(context: Context): string {
+  const botMatch = context.actor.match(/^(.+)\[bot\]$/)
+
+  if (botMatch) {
+    return `https://github.com/apps/${botMatch[1]}`
+  } else {
+    return `https://github.com/${context.actor}`
+  }
 }

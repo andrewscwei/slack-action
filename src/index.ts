@@ -4,11 +4,13 @@ import ansiStyles from 'ansi-styles'
 
 import { sendMessage } from './core/sendMessage.js'
 import { compose } from './utils/compose.js'
-import { getContext } from './utils/context.js'
+import { getContext, resolveActorAvatarUrl } from './utils/context.js'
 import { getInputs } from './utils/inputs.js'
 
 async function main() {
-  const context = getContext()
+  const baseContext = getContext()
+  const actorAvatarUrl = await resolveActorAvatarUrl(baseContext.actor)
+  const context = { ...baseContext, actorAvatarUrl }
   const inputs = getInputs()
   const message = compose(context, inputs)
 

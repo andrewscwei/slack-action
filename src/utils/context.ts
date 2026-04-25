@@ -1,8 +1,10 @@
 import * as github from '@actions/github'
+import fetch from 'node-fetch'
 
 export type Context = {
   ref: string
   actor: string
+  actorAvatarUrl?: string
   commitMessage?: string
   eventName: string
   repo: string
@@ -13,6 +15,7 @@ export type Context = {
 
 export function getContext(values?: Partial<Context>): Context {
   const actor = values?.actor ?? evalOrThrows(() => github.context.actor, 'actor')
+  const actorAvatarUrl = values?.actorAvatarUrl
   const commitMessage = values?.commitMessage ?? getCommitMessage()
   const eventName = values?.eventName ?? evalOrThrows(() => github.context.eventName, 'event-name')
   const ref = values?.ref ?? evalOrThrows(() => github.context.ref, 'ref')
@@ -24,12 +27,34 @@ export function getContext(values?: Partial<Context>): Context {
   return {
     ref,
     actor,
+    actorAvatarUrl,
     commitMessage,
     eventName,
     repo,
     runId,
     sha,
     workflow,
+  }
+}
+
+export async function resolveActorAvatarUrl(actor: string): Promise<string | undefined> {
+  try {
+    const headers: Record<string, string> = {
+      'Accept': 'application/vnd.github+json',
+      'User-Agent': 'slack-action',
+    }
+
+    const token = process.env.GITHUB_TOKEN
+    if (token) headers['Authorization'] = `Bearer ${token}`
+
+    const res = await fetch(`https://api.github.com/users/${encodeURIComponent(actor)}`, { headers })
+    if (!res.ok) return undefined
+
+    const data = await res.json() as { avatar_url?: string }
+
+    return data.avatar_url
+  } catch {
+    return undefined
   }
 }
 

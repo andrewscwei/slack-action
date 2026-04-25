@@ -13,7 +13,35 @@ export type Inputs = {
   webhookUrl: string
   isCancelled: boolean
   isSuccess: boolean
-  isVerbose: boolean
+}
+
+export function getInputs(mock?: Partial<Inputs>): Inputs {
+  const successPrefix = mock?.prefixes?.success ?? getStringInput('success-prefix', '🤖')
+  const failurePrefix = mock?.prefixes?.failure ?? getStringInput('failure-prefix', '😱')
+  const cancelledPrefix = mock?.prefixes?.cancelled ?? getStringInput('cancelled-prefix', '🫥')
+  const webhookUrl = mock?.webhookUrl ?? getStringInput('webhook-url')
+  const isSuccess = mock?.isSuccess ?? getBooleanInput('success', false)
+  const isCancelled = mock?.isCancelled ?? getBooleanInput('cancelled', false)
+  const actionLabel = mock?.action?.label ?? getStringInput('action-label', 'Open')
+  const actionUrl = mock?.action?.url ?? getStringInput('action-url', '')
+  const hasAction = isSuccess && actionUrl !== ''
+
+  return {
+    prefixes: {
+      cancelled: cancelledPrefix,
+      failure: failurePrefix,
+      success: successPrefix,
+    },
+    webhookUrl,
+    isCancelled,
+    isSuccess,
+    ...hasAction ? {
+      action: {
+        label: actionLabel,
+        url: actionUrl,
+      },
+    } : {},
+  }
 }
 
 export function getStringInput(id: string, defaultValue?: string): string {
@@ -35,36 +63,5 @@ export function getBooleanInput(id: string, defaultValue?: boolean): boolean {
   } catch (err) {
     if (defaultValue !== undefined) return defaultValue
     throw Error(`Required boolean input with ID <${id}> is not provided`, { cause: err })
-  }
-}
-
-export function getInputs(mock?: Partial<Inputs>): Inputs {
-  const successPrefix = mock?.prefixes?.success ?? getStringInput('success-prefix', '🤖')
-  const failurePrefix = mock?.prefixes?.failure ?? getStringInput('failure-prefix', '😱')
-  const cancelledPrefix = mock?.prefixes?.cancelled ?? getStringInput('cancelled-prefix', '🫥')
-  const webhookUrl = mock?.webhookUrl ?? getStringInput('webhook-url')
-  const isSuccess = mock?.isSuccess ?? getBooleanInput('success', false)
-  const isCancelled = mock?.isCancelled ?? getBooleanInput('cancelled', false)
-  const isVerbose = mock?.isVerbose ?? getBooleanInput('verbose', true)
-  const actionLabel = mock?.action?.label ?? getStringInput('action-label', 'Open')
-  const actionUrl = mock?.action?.url ?? getStringInput('action-url', '')
-  const hasAction = isSuccess && actionUrl !== ''
-
-  return {
-    prefixes: {
-      cancelled: cancelledPrefix,
-      failure: failurePrefix,
-      success: successPrefix,
-    },
-    webhookUrl,
-    isCancelled,
-    isSuccess,
-    isVerbose,
-    ...hasAction ? {
-      action: {
-        label: actionLabel,
-        url: actionUrl,
-      },
-    } : {},
   }
 }

@@ -1,7 +1,7 @@
 import { assert } from 'chai'
 import { describe, it } from 'mocha'
 
-import { compose, composeActionsBlock, composeBodyAttachment, composeBodyBlock } from './compose.js'
+import { compose, composeActions, composeBodyAttachment } from './compose.js'
 import { getContext } from './context.js'
 import { getInputs } from './inputs.js'
 
@@ -30,23 +30,37 @@ describe('compose', () => {
     isSuccess: false,
   })
 
-  it('can compose body block', () => {
-    assert.ok(composeBodyBlock(mockContext, mockSuccessInputs))
-    assert.ok(composeBodyBlock(mockContext, mockFailureInputs))
-  })
-
   it('can compose body attachment', () => {
     assert.ok(composeBodyAttachment(mockContext, mockSuccessInputs))
     assert.ok(composeBodyAttachment(mockContext, mockFailureInputs))
   })
 
   it('can compose actions block', () => {
-    assert(composeActionsBlock(mockContext, mockSuccessInputs).elements.length === 2)
-    assert(composeActionsBlock(mockContext, mockFailureInputs).elements.length === 1)
+    assert(composeActions(mockContext, mockSuccessInputs).elements.length === 2)
+    assert(composeActions(mockContext, mockFailureInputs).elements.length === 1)
   })
 
   it('can compose full message', () => {
     const message = compose(mockContext, mockSuccessInputs)
     assert.ok(message)
+  })
+
+  it('uses /apps/ link and resolved avatar url when actor is a bot', () => {
+    const botContext = getContext({
+      ref: 'foo',
+      actor: 'my-app[bot]',
+      actorAvatarUrl: 'https://avatars.githubusercontent.com/in/42?v=4',
+      eventName: 'push',
+      repo: 'foo',
+      runId: 'foo',
+      sha: 'foo',
+      workflow: 'foo',
+    })
+
+    const attachment = composeBodyAttachment(botContext, mockSuccessInputs)
+
+    assert.equal(attachment.footer_icon, 'https://avatars.githubusercontent.com/in/42?v=4')
+    assert.include(attachment.footer, 'https://github.com/apps/my-app')
+    assert.notInclude(attachment.footer, 'https://github.com/my-app[bot]')
   })
 })

@@ -34,7 +34,6 @@ describe('inputs', () => {
       webhookUrl: 'foo',
       isCancelled: false,
       isSuccess: false,
-      isVerbose: true,
     })
 
     assert.deepEqual(getInputs({
@@ -42,14 +41,12 @@ describe('inputs', () => {
       prefixes: { cancelled: 'qux', failure: 'baz', success: 'bar' },
       webhookUrl: 'foo',
       isSuccess: true,
-      isVerbose: false,
     }), {
       action: { label: 'bar', url: 'baz' },
       prefixes: { cancelled: 'qux', failure: 'baz', success: 'bar' },
       webhookUrl: 'foo',
       isCancelled: false,
       isSuccess: true,
-      isVerbose: false,
     })
   })
 })
