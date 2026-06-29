@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/andrewscwei/slack-action/compare/v2.2.0...v2.3.0) (2026-06-29)
+
+
+### Features
+
+* Upgrade actions ([53495b2](https://github.com/andrewscwei/slack-action/commit/53495b257d183e763f71db885369a9864fc8afc2))
+
 # [2.2.0](https://github.com/andrewscwei/slack-action/compare/v2.1.1...v2.2.0) (2026-04-25)
 
 
