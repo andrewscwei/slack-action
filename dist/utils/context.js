@@ -1,0 +1,70 @@
+import * as github from '@actions/github';
+import fetch from 'node-fetch';
+export function getContext(values) {
+    const actor = values?.actor ?? evalOrThrows(() => github.context.actor, 'actor');
+    const actorAvatarURL = values?.actorAvatarURL;
+    const commitMessage = values?.commitMessage ?? getCommitMessage();
+    const eventName = values?.eventName ?? evalOrThrows(() => github.context.eventName, 'event-name');
+    const ref = values?.ref ?? evalOrThrows(() => github.context.ref, 'ref');
+    const repo = values?.repo ?? evalOrThrows(() => `${github.context.repo.owner}/${github.context.repo.repo}`, 'repo');
+    const runId = values?.runId ?? evalOrThrows(() => isNaN(github.context.runId) ? undefined : github.context.runId.toString(), 'run-id');
+    const sha = values?.sha ?? getSHA();
+    const workflow = values?.workflow ?? evalOrThrows(() => github.context.workflow, 'workflow');
+    return {
+        ref,
+        actor,
+        actorAvatarURL,
+        commitMessage,
+        eventName,
+        repo,
+        runId,
+        sha,
+        workflow,
+    };
+}
+export async function resolveActorAvatarURL(actor) {
+    try {
+        const headers = {
+            'Accept': 'application/vnd.github+json',
+            'User-Agent': 'slack-action',
+        };
+        const token = process.env.GITHUB_TOKEN;
+        if (token)
+            headers['Authorization'] = `Bearer ${token}`;
+        const res = await fetch(`https://api.github.com/users/${encodeURIComponent(actor)}`, { headers });
+        if (!res.ok)
+            return undefined;
+        const data = await res.json();
+        return data.avatar_url;
+    }
+    catch {
+        return undefined;
+    }
+}
+function getSHA() {
+    if (github.context.ref.startsWith('refs/pull/')) {
+        return github.context.payload['pull_request']?.['head']?.['sha'];
+    }
+    else {
+        return github.context.sha;
+    }
+}
+function getCommitMessage() {
+    if (github.context.ref?.startsWith('refs/pull/')) {
+        return github.context.payload['pull_request']?.title;
+    }
+    else {
+        return github.context.payload['head_commit']?.['message'];
+    }
+}
+function evalOrThrows(expression, id) {
+    try {
+        const value = expression();
+        if (value === undefined)
+            throw Error(`Expression with ID <${id}> evaluated to undefined value`);
+        return value;
+    }
+    catch (err) {
+        throw Error(`Error evaluating expression with ID <${id}>`, { cause: err });
+    }
+}
